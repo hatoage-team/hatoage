@@ -1,6 +1,9 @@
 import express from "express";
+import dotenv from "dotenv";
 import products from "./products.json" assert { type: "json" };
 import basicAuth from "./middleware/basicAuth.js";
+
+dotenv.config();
 
 const app = express();
 app.set("view engine", "ejs");
