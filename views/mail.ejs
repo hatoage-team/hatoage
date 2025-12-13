@@ -2,52 +2,63 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>注文完了 - はとあげマーケット</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>はとあげマーケット - メール送信</title>
+    <meta name="description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジンを登録サイト" />
+    <meta name="keywords" content="わたあめえ, はとあげ, Fortnite, Discord, はと," />
+    <meta name="author" content="はとあげマーケット" />
+    <link rel="canonical" href="https://hatoagemarket.wataamee777.f5.si/" />
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="/style.css" type="text/css">
+  <script src="https://dmc1acwvwny3.cloudfront.net/atatus-spa.js"></script><font></font>
+<script type="text/javascript"><font></font>
+  atatus.config('3b8a17d616d24583a30d41294ed01917').install();<font></font>
+</script>
+    <script src="/script.js"></script>
 
-  <link rel="stylesheet" href="/style.css">
-  <link rel="icon" href="/assets/favicon.ico">
-
+    <!-- OGP -->
+    <meta property="og:title" content="はとあげマーケット" />
+    <meta property="og:description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジンを登録サイト" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hatoagemarket.wataamee777.f5.si/" />
+    <meta property="og:image" content="https://hatoagemarket.wataamee777.f5.si/logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="はとあげマーケットメール" />
+    <meta name="twitter:description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジン登録サイト" />
+    <meta name="twitter:image" content="https://hatoagemarket.wataamee777.f5.si/logo.png" />
   <style>
     body {
-      font-family: sans-serif;
-      background: #fff8f0;
-      text-align: center;
-      padding: 50px;
-      color: #333;
-    }
+     font-family: sans-serif;
+     background: #fff8f0;
+     color: #333;
+     text-align: center;
+     padding: 50px;
+     }
   </style>
-</head>
-
 <body>
-<%- include("partials/header") %>
+  <header>
+        <div class="logo">
+        <img src="/assets/logo.png" alt="はとあげマート">
+        </div>
 
-<main>
-  <h1>ご注文ありがとうございます！🐦</h1>
-
-  <% if (product) { %>
-    <p>
-      「<strong><%= product.name %></strong>（<%= product.amount %>）」<br>
-      を承りました！
-    </p>
-
-    <div class="product-images">
-      <img
-        src="/assets/<%= product.image %>"
-        alt="<%= product.name %>"
-        style="max-width:300px"
-      >
-    </div>
-
-    <p>希望小売価格：<%= product.price %>円</p>
-
-  <% } else { %>
-    <p>不明な商品です。</p>
-  <% } %>
-
-  <a href="/" class="btn">トップへ戻る</a>
-</main>
-
-<%- include("partials/footer") %>
+        <nav>
+            <a href="/" class="btn">ホーム</a>
+            <a href="/mail/" class="btn">メールマガジン</a>
+            <a href="https://discord.gg/B8rHDMug8P" class="btn">お問い合わせ</a>
+        </nav>
+    </header>
+  <main>
+  <iframe
+  src="https://script.google.com/macros/s/AKfycbymanhpHGtKQvleqfDG3gaYv922uvSNihnGWMiZdYSuzhnAjBHBrnE63IBTeNxBXs1gHw/exec"
+  width="100%"
+  height="400"
+  style="border: none;"
+  onload="this.contentWindow.focus();"
+  sandbox="allow-forms allow-scripts allow-same-origin" 
+  tabindex="0"
+    ></iframe>
+<a href="/">
+  <button id="btn" type="button">ホーム</button>
+</a>
+  </main>
 </body>
 </html>
