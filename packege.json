@@ -1,0 +1,16 @@
+{
+  "name": "hatoage-market",
+  "version": "1.0.0",
+  "description": "はとあげマーケット（Express + EJS）",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ejs": "^3.1.10",
+    "dotenv": "^16.4.5"
+  }
+}
