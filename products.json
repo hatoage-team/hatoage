@@ -1,1 +1,93 @@
-[]
+[
+  {
+    "slug": "hatoage_small",
+    "name": "はとあげ小",
+    "amount": "60g",
+    "price": 81,
+    "image": "hatoage_small.png"
+  },
+  {
+    "slug": "hatoage_large",
+    "name": "はとあげ大",
+    "amount": "120g",
+    "price": 180,
+    "image": "hatoage_large.png"
+  },
+  {
+    "slug": "hato",
+    "name": "はと",
+    "amount": "一羽",
+    "price": 8100,
+    "image": "hato.png"
+  },
+  {
+    "slug": "hato_head",
+    "name": "はとの頭",
+    "amount": "一個",
+    "price": 18,
+    "image": "hato_head.png"
+  },
+  {
+    "slug": "hato_wings",
+    "name": "はとの羽",
+    "amount": "一枚",
+    "price": 15,
+    "image": "hato_wings.png"
+  },
+  {
+    "slug": "hato_legs",
+    "name": "はとの足",
+    "amount": "一本",
+    "price": 10,
+    "image": "hato_legs.png"
+  },
+  {
+    "slug": "hato_nikuset",
+    "name": "はとの肉セット",
+    "amount": "合計500g",
+    "price": 1800,
+    "image": "hato_nikuset.png"
+  },
+  {
+    "slug": "hatoage_spices_small",
+    "name": "はとあげスパイス味小",
+    "amount": "60g",
+    "price": 81,
+    "image": "hatoage_spices_small.png"
+  },
+  {
+    "slug": "hatoage_spices_big",
+    "name": "はとあげスパイス味大",
+    "amount": "120g",
+    "price": 180,
+    "image": "hatoage_spices_big.png"
+  },
+  {
+    "slug": "hatoage_cheese_small",
+    "name": "はとあげチーズ味小",
+    "amount": "60g",
+    "price": 81,
+    "image": "hatoage_cheese_small.png"
+  },
+  {
+    "slug": "hatoage_cheese_big",
+    "name": "はとあげチーズ味大",
+    "amount": "120g",
+    "price": 180,
+    "image": "hatoage_cheese_big.png"
+  },
+  {
+    "slug": "hatoage_red_small",
+    "name": "はとあげレッド小",
+    "amount": "60g",
+    "price": 81,
+    "image": "hatoage_red_small.png"
+  },
+  {
+    "slug": "hatoage_red_big",
+    "name": "はとあげレッド大",
+    "amount": "120g",
+    "price": 180,
+    "image": "hatoage_red_big.png"
+  }
+]
