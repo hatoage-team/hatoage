@@ -23,7 +23,7 @@
   {
     "slug": "hato_head",
     "name": "はとの頭",
-    "amount": "一個",
+    "amount": "1個",
     "price": 18,
     "image": "hato_head.png"
   },
@@ -36,7 +36,7 @@
   },
   {
     "slug": "hato_legs",
-    "name": "はとの足",
+    "name": "はと足",
     "amount": "一本",
     "price": 10,
     "image": "hato_legs.png"
