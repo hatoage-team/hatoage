@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import fs from "fs";
 import dotenv from "dotenv";
 import products from "./products.json" with { type: "json" };
@@ -8,6 +9,7 @@ dotenv.config();
 
 const app = express();
 app.set("view engine", "ejs");
+app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -30,7 +32,7 @@ app.get("/order/:item", (req, res) => {
   res.render("order", { product });
 });
 
-app.get("/api/products", (_, res) => res.json(products));
+app.get("/api/products", cors(), (_, res) => res.json(products));
 
 app.get("/admin", basicAuth, (req, res) => {
   res.render("admin", { products });
