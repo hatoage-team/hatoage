@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>404 Not Found - はとあげマート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="お探しのページは見つかりませんでした。">
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/assets/favicon.ico">
+</head>
+
+<body>
+<%- include("partials/header") %>
+
+<main style="text-align:center; padding:60px">
+  <h1 class="fade-in">404 🐦</h1>
+  <p class="fade-in">
+    ページが見つかりませんでした。<br>
+    URLが間違っているか、商品が終了した可能性があります。
+  </p>
+
+  <div style="margin-top:30px">
+    <a href="/" class="btn">トップへ戻る</a>
+    <a href="/products/" class="btn">商品一覧を見る</a>
+  </div>
+</main>
+
+<%- include("partials/footer") %>
+</body>
+</html>
