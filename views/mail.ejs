@@ -35,18 +35,8 @@
      }
   </style>
 <body>
-  <header>
-        <div class="logo">
-        <img src="/assets/logo.png" alt="はとあげマート">
-        </div>
-
-        <nav>
-            <a href="/" class="btn">ホーム</a>
-            <a href="/mail/" class="btn">メールマガジン</a>
-            <a href="https://discord.gg/B8rHDMug8P" class="btn">お問い合わせ</a>
-        </nav>
-    </header>
-  <main>
+<%- include("partials/header") %>
+<main>
   <iframe
   src="https://script.google.com/macros/s/AKfycbymanhpHGtKQvleqfDG3gaYv922uvSNihnGWMiZdYSuzhnAjBHBrnE63IBTeNxBXs1gHw/exec"
   width="100%"
@@ -60,5 +50,7 @@
   <button id="btn" type="button">ホーム</button>
 </a>
   </main>
+
+<%- include("partials/footer") %>
 </body>
 </html>
