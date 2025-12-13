@@ -22,13 +22,17 @@ app.get("/products", (_, res) =>
 
 app.get("/products/:name", (req, res) => {
   const product = products.find(p => p.name === req.params.name);
-  if (!product) return res.status(404).send("Not found");
+  if (!product) {
+    return res.status(404).render("404");
+  }
   res.render("product", { product });
 });
 
 app.get("/order/:item", (req, res) => {
   const product = products.find(p => p.name === req.params.item);
-  if (!product) return res.status(404).send("Not found");
+  if (!product) {
+    return res.status(404).render("404");
+  }
   res.render("order", { product });
 });
 
@@ -60,6 +64,10 @@ app.post("/admin/delete/:slug", basicAuth, (req, res) => {
 
   fs.writeFileSync("products.json", JSON.stringify(products, null, 2));
   res.redirect("/admin");
+});
+
+app.use((req, res) => {
+  res.status(404).render("404");
 });
 
 app.listen(3000);
