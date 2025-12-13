@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>注文完了 - はとあげマーケット</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/assets/favicon.ico">
+
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff8f0;
+      text-align: center;
+      padding: 50px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+<%- include("partials/header") %>
+
+<main>
+  <h1>ご注文ありがとうございます！🐦</h1>
+
+  <% if (product) { %>
+    <p>
+      「<strong><%= product.name %></strong>（<%= product.amount %>）」<br>
+      を承りました！
+    </p>
+
+    <div class="product-images">
+      <img
+        src="/assets/<%= product.image %>"
+        alt="<%= product.name %>"
+        style="max-width:300px"
+      >
+    </div>
+
+    <p>希望小売価格：<%= product.price %>円</p>
+
+  <% } else { %>
+    <p>不明な商品です。</p>
+  <% } %>
+
+  <a href="/" class="btn">トップへ戻る</a>
+</main>
+
+<%- include("partials/footer") %>
+</body>
+</html>

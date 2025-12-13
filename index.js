@@ -33,8 +33,7 @@ app.get("/order/:item", (req, res) => {
 
 app.get("/api/products", (_, res) => res.json(products));
 
-app.get("/admin", basicAuth, (_, res) =>
-  res.render("admin", { products })
-);
-
+app.get("/admin", basicAuth, (req, res) => {
+  res.render("admin", { products });
+  });
 app.listen(3000);

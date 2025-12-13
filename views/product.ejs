@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title><%= product.name %> - はとあげマート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="<%= product.name %>を販売中。希望小売価格 <%= product.price %>円。">
+  <link rel="canonical" href="https://hatoagemarket.wataamee777.f5.si/products/<%= product.slug %>">
+
+  <!-- OGP -->
+  <meta property="og:title" content="<%= product.name %> - はとあげマート">
+  <meta property="og:description" content="<%= product.name %>｜<%= product.amount %>｜<%= product.price %>円">
+  <meta property="og:type" content="product">
+  <meta property="og:url" content="https://hatoagemarket.wataamee777.f5.si/products/<%= product.slug %>">
+  <meta property="og:image" content="https://hatoagemarket.wataamee777.f5.si/assets/<%= product.image %>">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/script.js"></script>
+  <link rel="icon" href="/assets/favicon.ico">
+</head>
+
+<body>
+<%- include("partials/header") %>
+
+<main>
+  <h1 class="fade-in"><%= product.name %> (<%= product.amount %>)</h1>
+  <p class="fade-in">希望小売価格 : <%= product.price %>円</p>
+
+  <div class="product-images fade-in">
+    <img src="/assets/<%= product.image %>" alt="<%= product.name %>">
+  </div>
+
+  <a href="/order/<%= product.slug %>" class="btn fade-in">購入</a>
+  <a href="/products/" class="btn fade-in">商品一覧に戻る</a>
+</main>
+
+<%- include("partials/footer") %>
+</body>
+</html>
