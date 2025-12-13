@@ -10,11 +10,6 @@ app.use(express.static("public"));
 app.get("/", (_, res) => res.render("index"));
 app.get("/mail", (_, res) => res.render("mail"));
 
-app.get("/religion/:page?", (req, res) => {
-  const page = req.params.page ?? "index";
-  res.render(`religion/${page}`);
-});
-
 app.get("/products", (_, res) =>
   res.render("products", { products })
 );
