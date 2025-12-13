@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import dotenv from "dotenv";
 import products from "./products.json" with { type: "json" };
 import basicAuth from "./middleware/basicAuth.js";
@@ -34,4 +35,29 @@ app.get("/api/products", (_, res) => res.json(products));
 app.get("/admin", basicAuth, (req, res) => {
   res.render("admin", { products });
   });
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/admin/add", basicAuth, (req, res) => {
+  const { slug, name, amount, price, image } = req.body;
+
+  products.push({
+    slug,
+    name,
+    amount,
+    price: Number(price),
+    image
+  });
+
+  fs.writeFileSync("products.json", JSON.stringify(products, null, 2));
+  res.redirect("/admin");
+});
+
+app.post("/admin/delete/:slug", basicAuth, (req, res) => {
+  const slug = req.params.slug;
+  products = products.filter(p => p.slug !== slug);
+
+  fs.writeFileSync("products.json", JSON.stringify(products, null, 2));
+  res.redirect("/admin");
+});
+
 app.listen(3000);
