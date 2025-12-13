@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <%- include("partials/head", {
+    title: product.title + " - はとあげマート",
+    description: product.description,
+    image: product.image
+  }) %>
+  <script defer src="/script.js"></script>
+</head>
+
+<body>
+  <%- include("partials/header") %>
+
+  <main>
+    <h1><%= product.title %></h1>
+    <p>希望小売価格 : <%= product.price %></p>
+    <img src="<%= product.image %>">
+    <a href="/order/<%= product.name %>" class="btn">購入</a>
+  </main>
+
+  <%- include("partials/footer") %>
+</body>
+</html>
