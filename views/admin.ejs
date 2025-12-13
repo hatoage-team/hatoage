@@ -3,59 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <title>管理画面 - はとあげマート</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="/style.css">
-  <link rel="icon" href="/assets/favicon.ico">
 </head>
-
 <body>
+
 <%- include("partials/header") %>
 
-<main class="admin">
-  <h1 class="fade-in">管理画面</h1>
+<main style="padding:40px">
+  <h1>管理画面</h1>
 
-  <!-- 商品追加 -->
-  <section class="fade-in">
+  <section>
     <h2>商品追加</h2>
 
-    <form action="/admin/add" method="POST">
-      <input name="slug" placeholder="slug（URL名）" required>
+    <form method="POST" action="/admin/add">
+      <input name="slug" placeholder="slug" required>
       <input name="name" placeholder="商品名" required>
-      <input name="amount" placeholder="量（60g / 一個 など）" required>
+      <input name="amount" placeholder="量 (60gなど)" required>
       <input name="price" type="number" placeholder="価格" required>
       <input name="image" placeholder="画像ファイル名" required>
-
-      <button type="submit" class="btn">追加</button>
+      <button class="btn" type="submit">追加</button>
     </form>
   </section>
 
-  <!-- 商品一覧 -->
-  <section class="fade-in">
-    <h2>商品一覧</h2>
+  <hr>
 
-    <% if (products.length === 0) { %>
-      <p>商品がありません。</p>
-    <% } %>
+  <section>
+    <h2>登録済み商品</h2>
 
-    <% products.forEach(p => { %>
-      <div class="product admin-product">
-        <img src="/assets/<%= p.image %>" alt="<%= p.name %>" width="120">
-
-        <div>
-          <strong><%= p.name %></strong><br>
-          slug: <code><%= p.slug %></code><br>
-          <%= p.amount %> / <%= p.price %>円
+    <% if (Array.isArray(products) && products.length > 0) { %>
+      <% products.forEach(p => { %>
+        <div class="product admin-product">
+          <img src="/assets/<%= p.image %>" width="100">
+          <strong><%= p.name %></strong>
+          <span>¥<%= p.price %></span>
         </div>
-
-        <form action="/admin/delete/<%= p.slug %>" method="POST">
-          <button class="btn" type="submit">削除</button>
-        </form>
-      </div>
-    <% }) %>
+      <% }) %>
+    <% } else { %>
+      <p>まだ商品がありません。</p>
+    <% } %>
   </section>
 </main>
 
 <%- include("partials/footer") %>
+
 </body>
 </html>
