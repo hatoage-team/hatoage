@@ -1,24 +1,51 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <%- include("partials/head", {
-    title: product.title + " - はとあげマート",
-    description: product.description,
-    image: product.image
-  }) %>
+  <meta charset="UTF-8">
+  <title>商品一覧 - はとあげマート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="はとあげマーケットの商品一覧ページです。">
+  <link rel="canonical" href="https://hatoagemarket.wataamee777.f5.si/products/">
+
+  <link rel="stylesheet" href="/style.css">
   <script defer src="/script.js"></script>
+  <link rel="icon" href="/assets/favicon.ico">
+
+  <!-- OGP -->
+  <meta property="og:title" content="商品一覧 - はとあげマート">
+  <meta property="og:description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイト。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hatoagemarket.wataamee777.f5.si/products/">
+  <meta property="og:image" content="https://hatoagemarket.wataamee777.f5.si/assets/logo.png">
 </head>
 
 <body>
-  <%- include("partials/header") %>
+<%- include("partials/header") %>
 
-  <main>
-    <h1><%= product.title %></h1>
-    <p>希望小売価格 : <%= product.price %></p>
-    <img src="<%= product.image %>">
-    <a href="/order/<%= product.name %>" class="btn">購入</a>
-  </main>
+<main>
+  <h1 class="fade-in">商品一覧</h1>
 
-  <%- include("partials/footer") %>
+  <div class="product-list">
+
+    <% if (!products || products.length === 0) { %>
+      <p class="fade-in">現在、商品はありません。</p>
+    <% } %>
+
+    <% products.forEach(p => { %>
+      <div class="product fade-in">
+        <img src="/assets/<%= p.image %>" alt="<%= p.name %>">
+
+        <h2><%= p.name %> (<%= p.amount %>)</h2>
+        <p>希望小売価格: <%= p.price %>円</p>
+
+        <a href="/products/<%= p.slug %>" class="btn">詳細を見る</a>
+      </div>
+    <% }) %>
+
+  </div>
+</main>
+
+<%- include("partials/footer") %>
 </body>
 </html>
