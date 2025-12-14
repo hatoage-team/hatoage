@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", checkVisibility, { passive: true });
   checkVisibility();
-});
 
 const CACHE_NAME = "hatoage-v1";
 
@@ -39,4 +38,5 @@ self.addEventListener("fetch", event => {
       return res || fetch(event.request);
     })
   );
+});
 });
