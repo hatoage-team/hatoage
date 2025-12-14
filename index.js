@@ -15,6 +15,10 @@ app.use(express.static("public"));
 
 app.get("/", (_, res) => res.render("index"));
 app.get("/mail", (_, res) => res.render("mail"));
+app.get("/manifest.json", (req, res) => {
+  res.type("application/manifest+json");
+  res.sendFile(process.cwd() + "/public/manifest.json");
+});
 
 app.get("/products", (_, res) =>
   res.render("products", { products })
