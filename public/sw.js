@@ -1,11 +1,9 @@
 const CACHE_NAME = "hatoage-v1";
 
 const STATIC_ASSETS = [
-  "/",
   "/style.css",
   "/script.js",
   "/manifest.json",
-  "/products",
   "/assets/logo.png"
 ];
 
