@@ -20,8 +20,8 @@ app.get("/products", (_, res) =>
   res.render("products", { products })
 );
 
-app.get("/products/:name", (req, res) => {
-  const product = products.find(p => p.name === req.params.name);
+app.get("/products/:slug", (req, res) => {
+  const product = products.find(p => p.slug === req.params.slug);
   if (!product) {
     return res.status(404).render("404");
   }
