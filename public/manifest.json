@@ -3,7 +3,7 @@
   "short_name": "はとあげ",
   "description": "美味しいはとあげを販売する架空のコンビニ",
   "start_url": "/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "background_color": "#fff8f0",
   "theme_color": "#f76f51",
   "orientation": "portrait",
@@ -18,5 +18,8 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "prefer_related_applications": true,
+  "lang": "ja",
+  "id": "hatoage"
 }
