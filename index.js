@@ -6,10 +6,6 @@ import basicAuth from "./middleware/basicAuth.js";
 
 dotenv.config();
 
-let products = JSON.parse(
-  fs.readFileSync("./products.json", "utf-8")
-);
-
 const app = express();
 app.set("view engine", "ejs");
 app.set("trust proxy", 1);
@@ -131,7 +127,7 @@ app.post("/admin/delete/:slug", basicAuth, async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log("server started on", PORT);
 });
