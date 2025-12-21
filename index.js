@@ -2,10 +2,13 @@ import express from "express";
 import cors from "cors";
 import fs from "fs";
 import dotenv from "dotenv";
-import products from "./products.json" with { type: "json" };
 import basicAuth from "./middleware/basicAuth.js";
 
 dotenv.config();
+
+let products = JSON.parse(
+  fs.readFileSync("./products.json", "utf-8")
+);
 
 const app = express();
 app.set("view engine", "ejs");
@@ -74,4 +77,7 @@ app.use((req, res) => {
   res.status(404).render("404");
 });
 
-app.listen(3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("server started on", PORT);
+});
