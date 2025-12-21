@@ -1,0 +1,67 @@
+name: Admin Products Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action to perform: add or delete"
+        required: true
+      slug:
+        description: "Product slug (required)"
+        required: true
+      name:
+        description: "Product name (only for add)"
+        required: false
+      amount:
+        description: "Product amount (only for add)"
+        required: false
+      price:
+        description: "Product price (only for add)"
+        required: false
+      image:
+        description: "Product image filename (only for add)"
+        required: false
+
+jobs:
+  update-products:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set inputs as environment variables
+        run: |
+          echo "ACTION=${{ github.event.inputs.action }}" >> $GITHUB_ENV
+          echo "SLUG=${{ github.event.inputs.slug }}" >> $GITHUB_ENV
+          echo "NAME=${{ github.event.inputs.name }}" >> $GITHUB_ENV
+          echo "AMOUNT=${{ github.event.inputs.amount }}" >> $GITHUB_ENV
+          echo "PRICE=${{ github.event.inputs.price }}" >> $GITHUB_ENV
+          echo "IMAGE=${{ github.event.inputs.image }}" >> $GITHUB_ENV
+
+      - name: Update products.json
+        run: |
+          FILE=products.json
+          TMP=$(mktemp)
+
+          if [ "$ACTION" = "add" ]; then
+            jq --arg slug "$SLUG" \
+               --arg name "$NAME" \
+               --arg amount "$AMOUNT" \
+               --arg price "$PRICE" \
+               --arg image "$IMAGE" \
+               '. += [{"slug":$slug, "name":$name, "amount":$amount, "price":($price|tonumber), "image":$image}]' \
+               $FILE > $TMP && mv $TMP $FILE
+          elif [ "$ACTION" = "delete" ]; then
+            jq --arg slug "$SLUG" 'map(select(.slug != $slug))' $FILE > $TMP && mv $TMP $FILE
+          else
+            echo "Unknown action: $ACTION"
+            exit 1
+          fi
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"          git add products.json
+          git commit -m "${ACTION^} product $SLUG from Admin UI" || echo "No changes"
+          git push origin main || echo "Nothing to push"
