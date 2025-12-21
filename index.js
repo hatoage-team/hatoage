@@ -3,6 +3,7 @@ import cors from "cors";
 import fs from "fs";
 import dotenv from "dotenv";
 import basicAuth from "./middleware/basicAuth.js";
+import products from "./products.json" assert { type: "json" };
 
 dotenv.config();
 
