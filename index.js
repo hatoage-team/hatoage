@@ -12,9 +12,14 @@ let products = JSON.parse(
 
 const app = express();
 app.set("view engine", "ejs");
+app.set("trust proxy", 1);
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+app.set("trust proxy", 1);
+process.on("unhandledRejection", console.error);
+process.on("uncaughtException", console.error);
+
 
 app.get("/", (_, res) => res.render("index"));
 app.get("/mail", (_, res) => res.render("mail"));
