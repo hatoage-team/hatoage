@@ -55,31 +55,80 @@ app.get("/admin", basicAuth, (req, res) => {
   });
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/admin/add", basicAuth, (req, res) => {
+// 商品追加
+app.post("/admin/add", basicAuth, async (req, res) => {
   const { slug, name, amount, price, image } = req.body;
 
-  products.push({
-    slug,
-    name,
-    amount,
-    price: Number(price),
-    image
-  });
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/hatoage-team/hatoage/actions/workflows/main.yml/dispatches`,
+      {
+        method: "POST",
+        headers: {
+          "Accept": "application/vnd.github+json",
+          "Authorization": `token ${process.env.GITHUB_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ref: "main",
+          inputs: {
+            action: "add",
+            slug,
+            name,
+            amount,
+            price,
+            image
+          }
+        })
+      }
+    );
 
-  fs.writeFileSync("products.json", JSON.stringify(products, null, 2));
-  res.redirect("/admin");
+    if (!response.ok) {
+      console.error(await response.text());
+      return res.status(500).send("Failed to trigger GitHub workflow");
+    }
+
+    res.send("Product add triggered! Render will redeploy shortly.");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error triggering workflow");
+  }
 });
 
-app.post("/admin/delete/:slug", basicAuth, (req, res) => {
+// 商品削除
+app.post("/admin/delete/:slug", basicAuth, async (req, res) => {
   const slug = req.params.slug;
-  products = products.filter(p => p.slug !== slug);
 
-  fs.writeFileSync("products.json", JSON.stringify(products, null, 2));
-  res.redirect("/admin");
-});
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/hatoage-team/hatoage/actions/workflows/main.yml/dispatches`,
+      {
+        method: "POST",
+        headers: {
+          "Accept": "application/vnd.github+json",
+          "Authorization": `token ${process.env.GITHUB_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ref: "main",
+          inputs: {
+            action: "delete",
+            slug
+          }
+        })
+      }
+    );
 
-app.use((req, res) => {
-  res.status(404).render("404");
+    if (!response.ok) {
+      console.error(await response.text());
+      return res.status(500).send("Failed to trigger GitHub workflow");
+    }
+
+    res.send("Product delete triggered! Render will redeploy shortly.");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error triggering workflow");
+  }
 });
 
 const PORT = process.env.PORT || 3000;
