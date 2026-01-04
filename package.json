@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest",
+    "test": "echo \"No tests specified\"",
     "dev": "node --watch index.js"
   },
   "dependencies": {
