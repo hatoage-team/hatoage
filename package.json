@@ -1,7 +1,7 @@
 {
   "name": "hatoage-market",
   "version": "1.0.0",
-  "description": "はとあげマーケット（Express + EJS）",
+  "description": "はとあげマーケット",
   "type": "module",
   "main": "index.js",
   "scripts": {
