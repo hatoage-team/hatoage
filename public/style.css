@@ -1,115 +1,21 @@
-/* 全体のスタイル */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    background-color: white;
-}
-
-/* ヘッダーを固定 */
-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    z-index: 1000;
-}
-
-/* ロゴのスタイル */
-.logo img {
-    height: 50px;
-}
-
-/* ナビゲーションメニュー */
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 10px;
-}
-
-nav ul li a {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007acc;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-nav ul li a:hover {
-    background-color: #005f99;
-}
-
-/* メインコンテンツの余白調整（ヘッダー固定のため） */
-main {
-    padding-top: 80px;
-}
-
-/* 画像のアニメーション */
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 1s ease-out, transform 1s ease-out;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* セールバナー */
-.sale-banner img {
-    max-width: 80%;
-    margin-top: 20px;
-}
-
-/* コンセプト画像 */
-.concept-image img {
-    max-width: 100%;
-    margin-top: 20px;
-}
-
-/* ボタン */
-.btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007acc;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-.btn:hover {
-    background-color: #005f99;
-}
-
-/* フッター */
-footer {
-    margin-top: 40px;
-    padding: 10px;
-    background: #f8f8f8;
-}
+/* ===== リセット & 基本 ===== */
 * {
   box-sizing: border-box;
 }
 
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: white;
+}
+
+/* ===== ヘッダー ===== */
 header {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -120,16 +26,111 @@ header {
   z-index: 1000;
 }
 
+/* ロゴ */
+.logo img {
+  height: 50px;
+}
+
+/* ===== ナビゲーション ===== */
 nav {
   min-width: 0;
 }
 
 nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
+  gap: 10px;          /* ← margin禁止、gap正義 */
+  flex-wrap: wrap;   /* ← スマホ対応 */
+}
+
+nav ul li {
+  margin: 0;
 }
 
 nav ul li a {
-  white-space: nowrap;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007acc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s;
+  white-space: nowrap; /* 文字ではみ出さない */
+}
+
+nav ul li a:hover {
+  background-color: #005f99;
+}
+
+/* ===== メイン ===== */
+main {
+  padding-top: 90px; /* fixed header 分 */
+}
+
+/* ===== アニメーション ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== 画像系 ===== */
+.sale-banner img {
+  max-width: 80%;
+  margin-top: 20px;
+}
+
+.concept-image img {
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+/* ===== 汎用ボタン ===== */
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007acc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #005f99;
+}
+
+/* ===== フッター ===== */
+footer {
+  margin-top: 40px;
+  padding: 10px;
+  background: #f8f8f8;
+}
+
+/* ===== スマホ微調整 ===== */
+@media (max-width: 600px) {
+  header {
+    padding: 10px;
+  }
+
+  nav ul {
+    justify-content: center;
+  }
+
+  nav ul li a {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  main {
+    padding-top: 110px;
+  }
 }
