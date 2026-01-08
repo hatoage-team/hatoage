@@ -21,6 +21,20 @@
     "image": "hato.png"
   },
   {
+    "slug": "aohato"
+    "name": "あおばと"
+    "amount": "1羽"
+    "price": "8200"
+    "image": "aohato.png"
+  },
+  {
+    "slug": "whitebear",
+    "name": "ホワイトベア",
+    "amount": "1体",
+    "price": 81100,
+    "image": "whitebear.png"
+  },
+  {
     "slug": "hato_head",
     "name": "はとの頭",
     "amount": "1個",
