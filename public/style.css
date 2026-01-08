@@ -29,6 +29,7 @@ header {
 /* ロゴ */
 .logo img {
   height: 50px;
+  pointer-events: none;
 }
 
 /* ===== ナビゲーション ===== */
