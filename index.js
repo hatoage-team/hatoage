@@ -57,7 +57,7 @@ app.get("/admin", basicAuth, async (req, res) => {
     `${API}/`
     ).then(r => r.json());
 
-  res.render("admin", { products });
+  res.render("admin", { product });
   });
 app.use(express.urlencoded({ extended: true }));
 
