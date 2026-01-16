@@ -2,49 +2,65 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>管理画面 - はとあげマート</title>
-  <link rel="stylesheet" href="/style.css">
+  <title>管理画面</title>
 </head>
 <body>
 
-<%- include("partials/header") %>
+<h1>管理画面</h1>
 
-<main style="padding:40px">
-  <h1>管理画面</h1>
+<h2>商品追加</h2>
+<form method="POST" action="/admin/products">
+  <input name="slug" placeholder="slug" required>
+  <input name="name" placeholder="商品名" required>
+  <input name="amount" placeholder="量">
+  <input name="price" type="number" placeholder="価格">
+  <input name="image" placeholder="画像path(full)">
+  <button type="submit">追加</button>
+</form>
 
-  <section>
-    <h2>商品追加</h2>
+<hr>
 
-    <form method="POST" action="/admin/add">
-      <input name="slug" placeholder="slug" required>
-      <input name="name" placeholder="商品名" required>
-      <input name="amount" placeholder="量 (60gなど)" required>
-      <input name="price" type="number" placeholder="価格" required>
-      <input name="image" placeholder="画像ファイル名" required>
-      <button class="btn" type="submit">追加</button>
-    </form>
-  </section>
+<h2>登録済み商品</h2>
 
-  <hr>
+<% products.forEach(p => { %>
+  <div data-slug="<%= p.slug %>">
+    <input class="name" value="<%= p.name %>">
+    <input class="amount" value="<%= p.amount %>">
+    <input class="price" type="number" value="<%= p.price %>">
+    <input class="image" value="<%= p.image %>">
 
-  <section>
-    <h2>登録済み商品</h2>
+    <button onclick="update('<%= p.slug %>')">更新</button>
+    <button onclick="remove('<%= p.slug %>')">削除</button>
+  </div>
+<% }) %>
 
-    <% if (Array.isArray(products) && products.length > 0) { %>
-      <% products.forEach(p => { %>
-        <div class="product admin-product">
-          <img src="/assets/<%= p.image %>" width="100">
-          <strong><%= p.name %></strong>
-          <span>¥<%= p.price %></span>
-        </div>
-      <% }) %>
-    <% } else { %>
-      <p>まだ商品がありません。</p>
-    <% } %>
-  </section>
-</main>
+<script>
+async function update(slug) {
+  const box = document.querySelector(`[data-slug="${slug}"]`);
 
-<%- include("partials/footer") %>
+  const body = {
+    name: box.querySelector(".name").value,
+    amount: box.querySelector(".amount").value,
+    price: box.querySelector(".price").value,
+    image: box.querySelector(".image").value
+  };
+
+  await fetch(`/admin/products/${slug}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+
+  alert("更新した");
+}
+
+async function remove(slug) {
+  if (!confirm("削除する？")) return;
+
+  await fetch(`/admin/products/${slug}`, { method: "DELETE" });
+  location.reload();
+}
+</script>
 
 </body>
 </html>
