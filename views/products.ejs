@@ -28,11 +28,11 @@
 
   <div class="product-list">
 
-    <% if (!products || products.length === 0) { %>
+    <% if (!product || product.length === 0) { %>
       <p class="fade-in">現在、商品はありません。</p>
     <% } %>
 
-    <% products.forEach(p => { %>
+    <% product.forEach(p => { %>
       <div class="product fade-in">
         <img src="/assets/<%= p.image %>" alt="<%= p.name %>">
 
