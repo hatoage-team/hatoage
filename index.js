@@ -49,7 +49,7 @@ app.get("/order/:slug", async (req, res) => {
 });
 
 app.get("/api/products", cors(), (_, res) => {
-  res.redirect(301, ${API});
+  res.redirect(301, `${API}`);
 
 app.get("/admin", basicAuth, (req, res) => {
   res.render("admin", { products });
