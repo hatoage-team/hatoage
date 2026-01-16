@@ -3,7 +3,6 @@ import cors from "cors";
 import fs from "fs";
 import dotenv from "dotenv";
 import basicAuth from "./middleware/basicAuth.js";
-import products from "./products.json" with { type: "json" };
 
 dotenv.config();
 
@@ -24,108 +23,81 @@ app.get("/manifest.json", (req, res) => {
   res.type("application/manifest+json");
   res.sendFile(process.cwd() + "/public/manifest.json");
 });
+const API = "https://hatoage.wata777.workers.dev";
 
-app.get("/products", (_, res) =>
-  res.render("products", { products })
-);
+app.get("/products", async (_, res) => {
+  const products = await fetch(`${API}/items`).then(r => r.json());
+  res.render("products", { products });
+});
 
-app.get("/products/:slug", (req, res) => {
-  const product = products.find(p => p.slug === req.params.slug);
-  if (!product) {
-    return res.status(404).render("404");
-  }
+app.get("/products/:slug", async (req, res) => {
+  const product = await fetch(
+    `${API}/item/${req.params.slug}`
+  ).then(r => r.json());
+
+  if (!product) return res.status(404).render("404");
   res.render("product", { product });
 });
 
 app.get("/order/:slug", (req, res) => {
-  const product = products.find(p => p.slug === req.params.slug);
-  if (!product) {
-    return res.status(404).render("404");
-  }
+  const product = await fetch(
+    `${API}/item/${req.params.slug}`
+  ).then(r => r.json());
+
+  if (!product) return res.status(404).render("404");
   res.render("order", { product });
 });
 
-app.get("/api/products", cors(), (_, res) => res.json(products));
+app.get("/api/products", cors(), (_, res) => {
+  res.redirect(301, ${API});
 
 app.get("/admin", basicAuth, (req, res) => {
   res.render("admin", { products });
   });
 app.use(express.urlencoded({ extended: true }));
 
-// 商品追加
-app.post("/admin/add", basicAuth, async (req, res) => {
-  const { slug, name, amount, price, image } = req.body;
-
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/hatoage-team/hatoage/actions/workflows/main.yml/dispatches`,
-      {
-        method: "POST",
-        headers: {
-          "Accept": "application/vnd.github+json",
-          "Authorization": `token ${process.env.GITHUB_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ref: "main",
-          inputs: {
-            action: "add",
-            slug,
-            name,
-            amount,
-            price,
-            image
-          }
-        })
-      }
-    );
-
-    if (!response.ok) {
-      console.error(await response.text());
-      return res.status(500).send("Failed to trigger GitHub workflow");
-    }
-
-    res.send("Product add triggered! Render will redeploy shortly.");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error triggering workflow");
-  }
+app.post("/admin/products", basicAuth, async (req, res) => {
+  const r = await fetch(API + "/products", {
+    method: "POST",
+    headers: jsonHeaders(),
+    body: JSON.stringify(req.body)
+  });
+  res.status(r.status).send(await r.text());
+});
+  
+app.put("/admin/products/:slug", basicAuth, async (req, res) => {
+  const r = await fetch(API + "/products", {
+    method: "PUT",
+    headers: jsonHeaders(),
+    body: JSON.stringify({
+      slug: req.params.slug,
+      ...req.body
+    })
+  });
+  res.status(r.status).send(await r.text());
 });
 
-// 商品削除
-app.post("/admin/delete/:slug", basicAuth, async (req, res) => {
-  const slug = req.params.slug;
+app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
+  const r = await fetch(API + "/products", {
+    method: "PATCH",
+    headers: jsonHeaders(),
+    body: JSON.stringify({
+      slug: req.params.slug,
+      ...req.body
+    })
+  });
+  res.status(r.status).send(await r.text());
+});
 
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/hatoage-team/hatoage/actions/workflows/main.yml/dispatches`,
-      {
-        method: "POST",
-        headers: {
-          "Accept": "application/vnd.github+json",
-          "Authorization": `token ${process.env.GITHUB_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ref: "main",
-          inputs: {
-            action: "delete",
-            slug
-          }
-        })
-      }
-    );
-
-    if (!response.ok) {
-      console.error(await response.text());
-      return res.status(500).send("Failed to trigger GitHub workflow");
-    }
-
-    res.send("Product delete triggered! Render will redeploy shortly.");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error triggering workflow");
-  }
+app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
+  const r = await fetch(API + "/products", {
+    method: "DELETE",
+    headers: jsonHeaders(),
+    body: JSON.stringify({
+      slug: req.params.slug
+    })
+  });
+  res.status(r.status).send(await r.text());
 });
 
 const PORT = process.env.PORT;
