@@ -76,7 +76,6 @@ app.post("/admin/products", basicAuth, async (req, res) => {
     res.redirect('/admin');
   }, 2500);
 });
-});
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
@@ -91,7 +90,6 @@ app.put("/admin/products/:slug", basicAuth, async (req, res) => {
   setTimeout(() => {
     res.redirect('/admin');
   }, 2500);
-});
 });
 
 app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -108,7 +106,6 @@ app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
     res.redirect('/admin');
   }, 2500);
 });
-});
 
 app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
@@ -122,7 +119,6 @@ app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
   setTimeout(() => {
     res.redirect('/admin');
   }, 2500);
-});
 });
 
 const PORT = process.env.PORT;
