@@ -16,6 +16,10 @@ app.set("trust proxy", 1);
 process.on("unhandledRejection", console.error);
 process.on("uncaughtException", console.error);
 
+const jsonHeaders = () => ({
+  "Content-Type": "application/json",
+  "Accept": "application/json"
+});
 
 app.get("/", (_, res) => res.render("index"));
 app.get("/mail", (_, res) => res.render("mail"));
