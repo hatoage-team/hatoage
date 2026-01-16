@@ -39,7 +39,7 @@ app.get("/products/:slug", async (req, res) => {
   res.render("product", { product });
 });
 
-app.get("/order/:slug", (req, res) => {
+app.get("/order/:slug", async (req, res) => {
   const product = await fetch(
     `${API}/item/${req.params.slug}`
   ).then(r => r.json());
