@@ -30,8 +30,8 @@ app.get("/manifest.json", (req, res) => {
 const API = "https://hatoage.wata777.workers.dev";
 
 app.get("/products", async (_, res) => {
-  const products = await fetch(`${API}/items`).then(r => r.json());
-  res.render("products", { products });
+  const product = await fetch(`${API}`).then(r => r.json());
+  res.render("products", { product });
 });
 
 app.get("/products/:slug", async (req, res) => {
