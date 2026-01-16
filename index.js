@@ -52,7 +52,11 @@ app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}`);
   });
 
-app.get("/admin", basicAuth, (req, res) => {
+app.get("/admin", basicAuth, async (req, res) => {
+  const product = await fetch(
+    `${API}/`
+    ).then(r => r.json());
+
   res.render("admin", { products });
   });
 app.use(express.urlencoded({ extended: true }));
