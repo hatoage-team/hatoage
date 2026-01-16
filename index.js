@@ -72,6 +72,10 @@ app.post("/admin/products", basicAuth, async (req, res) => {
     body: JSON.stringify(req.body)
   });
   res.status(r.status).send(await r.text());
+  setTimeout(() => {
+    res.redirect('/admin');
+  }, 2500);
+});
 });
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -84,6 +88,10 @@ app.put("/admin/products/:slug", basicAuth, async (req, res) => {
     })
   });
   res.status(r.status).send(await r.text());
+  setTimeout(() => {
+    res.redirect('/admin');
+  }, 2500);
+});
 });
 
 app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -96,6 +104,10 @@ app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
     })
   });
   res.status(r.status).send(await r.text());
+  setTimeout(() => {
+    res.redirect('/admin');
+  }, 2500);
+});
 });
 
 app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -107,6 +119,10 @@ app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
     })
   });
   res.status(r.status).send(await r.text());
+  setTimeout(() => {
+    res.redirect('/admin');
+  }, 2500);
+});
 });
 
 const PORT = process.env.PORT;
