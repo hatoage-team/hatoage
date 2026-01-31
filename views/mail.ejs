@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <title>はとあげマーケット - メール送信</title>
     <meta name="description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジンを登録サイト">
     <meta name="keywords" content="わたあめえ, はとあげ, Fortnite, Discord, はと">
@@ -27,91 +27,104 @@
     <meta name="twitter:title" content="はとあげマーケットメール">
     <meta name="twitter:description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジン登録サイト">
     <meta name="twitter:image" content="https://hatoage.wata777.f5.si/assets/logo.png">
-
-    <style>
+<style>
 body {
-  font-family: system-ui, sans-serif;
-  background: #f4f4f4;
-  padding: 24px;
+  font-family: sans-serif;
+  background:#f6f6f6;
+  padding:20px;
 }
-
-section {
-  background: #fff;
-  padding: 16px;
-  margin-bottom: 16px;
-  border-radius: 8px;
+.box {
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
 }
-
-label {
-  display: block;
-  margin-top: 12px;
+input, button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  font-size:16px;
 }
-
-input, select, button {
-  width: 100%;
-  margin-top: 6px;
+button {
+  background:#ff9800;
+  border:none;
+  color:#fff;
+  border-radius:5px;
 }
-    </style>
-</head> <!-- ← 閉じタグが抜けていたのを追加 -->
+.overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.overlay .box {
+  width:90%;
+  max-width:320px;
+}
+</style>
+</head>
 <body>
+
 <%- include("partials/header") %>
-<main>
-   <% if (state === "input") { %>
-<section>
-  <h2>操作</h2>
-  <form method="POST" action="/mail">
-    <input type="hidden" name="step" value="request">
 
-    <label>操作</label>
-    <select name="action" required>
-      <option value="list">一覧</option>
-      <option value="add">追加</option>
-      <option value="delete">削除</option>
-    </select>
+<div class="box">
+  <h2>📮 はとあげ メール登録</h2>
+  <p>メールアドレスを入力してください</p>
+  <input id="email" placeholder="example@gmail.com">
+  <button onclick="sendOtp()">認証コードを送信</button>
+</div>
 
-    <label>メール</label>
-    <input name="email" type="email" required>
+<!-- OTP オーバーレイ -->
+<div class="overlay" id="otpOverlay">
+  <div class="box">
+    <h3>認証コード入力</h3>
+    <input id="otp" placeholder="6桁コード">
+    <button onclick="verifyOtp()">確認</button>
+  </div>
+</div>
 
-    <button>OTP送信</button>
-  </form>
-</section>
-<% } %>
-
-<% if (state === "otp") { %>
-<section>
-  <h2>認証</h2>
-  <form method="POST" action="/mail">
-    <input type="hidden" name="step" value="verify">
-    <input type="hidden" name="email" value="<%= email %>">
-    <input type="hidden" name="action" value="<%= action %>">
-
-    <label>OTP</label>
-    <input name="otp" pattern="\d{6}" required>
-
-    <button>実行</button>
-  </form>
-</section>
-<% } %>
-
-<% if (state === "done") { %>
-<section>
-  <h2>完了</h2>
-  <pre><%= JSON.stringify(result, null, 2) %></pre>
-  <a href="/mail">戻る</a>
-</section>
-<% } %>
-
-<% if (state === "error") { %>
-<section>
-  <h2>エラー</h2>
-  <p><%= error %></p>
-  <a href="/mail">戻る</a>
-</section>
-<% } %>
+<!-- 完了 -->
+<div class="overlay" id="doneOverlay">
+  <div class="box">
+    <h3>✅ 登録完了</h3>
+    <p>メール登録が完了しました</p>
+  </div>
+</div>
 
 <a href="/" id="btn" class="btn-link">ホーム</a>
-</main>
+
+<script>
+async function sendOtp() {
+  await fetch("/mail/send", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ email: email.value })
+  });
+  otpOverlay.style.display = "flex";
+}
+
+async function verifyOtp() {
+  const r = await fetch("/mail/verify", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      email: email.value,
+      otp: otp.value
+    })
+  });
+
+  const j = await r.json();
+  if (j.ok) {
+    otpOverlay.style.display = "none";
+    doneOverlay.style.display = "flex";
+  } else {
+    alert("認証コードが違います");
+  }
+}
+</script>
 
 <%- include("partials/footer") %>
+
 </body>
 </html>
