@@ -30,13 +30,13 @@ app.get("/manifest.json", (req, res) => {
 const API = "https://hatoage.wata777.workers.dev";
 
 app.get("/products", async (_, res) => {
-  const product = await fetch(`${API}`).then(r => r.json());
+  const product = await fetch(`${API}/products/`).then(r => r.json());
   res.render("products", { product });
 });
 
 app.get("/products/:slug", async (req, res) => {
   const product = await fetch(
-    `${API}/item/${req.params.slug}`
+    `${API}/products/item/${req.params.slug}`
   ).then(r => r.json());
 
   if (!product) return res.status(404).render("404");
@@ -45,7 +45,7 @@ app.get("/products/:slug", async (req, res) => {
 
 app.get("/order/:slug", async (req, res) => {
   const product = await fetch(
-    `${API}/item/${req.params.slug}`
+    `${API}/products/item/${req.params.slug}`
   ).then(r => r.json());
 
   if (!product) return res.status(404).render("404");
