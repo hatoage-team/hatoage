@@ -56,53 +56,63 @@ app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}`);
   });
 
-const WORKERS_MAIL = "https://hatoage.wata777.workers.dev/mail";
-
+/* ===== SMTP ===== */
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
   }
 });
 
-app.get("/mail", (req, res) => {
-  res.render("mail", { state: "input" });
+/* ===== ページ表示 ===== */
+app.get("/mail", (_, res) => {
+  res.render("mail");
 });
 
-app.post("/mail", async (req, res) => {
-  try {
-    const r = await fetch(WORKERS_MAIL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Internal-Key": process.env.INTERNAL_KEY
-      },
-      body: JSON.stringify(req.body)
-    });
+/* ===== OTP送信 ===== */
+app.post("/mail/send", async (req, res) => {
+  const { email } = req.body;
 
-    const data = await r.json();
+  const r = await fetch(`${API}/mail/otp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
 
-    if (data.state === "otp_issued" && data.otp) {
-      let html = fs.readFileSync("./mailer/otp.html", "utf8");
-      html = html.replace("{{OTP}}", data.otp);
+  const { otp } = await r.json();
 
-      await transporter.sendMail({
-        to: req.body.email,
-        subject: "【はとあげメール】認証コード",
-        html
-      });
-    }
+  await transporter.sendMail({
+    from: "はとあげマーケット <hato.age.3n@gmail.com>",
+    to: email,
+    subject: "【はとあげメール】認証コード",
+    html: `
+      <div style="font-family:sans-serif">
+        <h2>認証コード</h2>
+        <p style="font-size:28px;font-weight:bold">${otp}</p>
+        <p>5分以内に入力してください。</p>
+      </div>
+    `
+  });
 
-    res.render("mail", data);
-  } catch (e) {
-    res.render("mail", {
-      state: "error",
-      message: e.message
-    });
-  }
+  res.json({ ok: true });
 });
 
+/* ===== OTP確認 ===== */
+app.post("/mail/verify", async (req, res) => {
+  const { email, otp } = req.body;
+
+  const r = await fetch(`${API}/mail/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp })
+  });
+
+  const j = await r.json();
+  res.json(j);
+});
 app.get("/admin", basicAuth, async (req, res) => {
   const product = await fetch(
     `${API}/`
