@@ -36,7 +36,7 @@ app.get("/products", async (_, res) => {
 
 app.get("/products/:slug", async (req, res) => {
   const product = await fetch(
-    `${API}/products/item/${req.params.slug}`
+    `${API}/products/${req.params.slug}`
   ).then(r => r.json());
 
   if (!product) return res.status(404).render("404");
@@ -45,7 +45,7 @@ app.get("/products/:slug", async (req, res) => {
 
 app.get("/order/:slug", async (req, res) => {
   const product = await fetch(
-    `${API}/products/item/${req.params.slug}`
+    `${API}/products/${req.params.slug}`
   ).then(r => r.json());
 
   if (!product) return res.status(404).render("404");
