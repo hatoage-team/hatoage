@@ -2,31 +2,22 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-    <title>はとあげマーケット - メール送信</title>
-    <meta name="description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジンを登録サイト">
-    <meta name="keywords" content="わたあめえ, はとあげ, Fortnite, Discord, はと">
-    <meta name="author" content="はとあげマーケット">
-    <link rel="canonical" href="https://hatoage.wata777.f5.si/">
-    <link rel="icon" href="/assets/logo.png" type="image/png">
-    <link rel="stylesheet" href="/style.css">
+<title>はとあげマーケット - メール送信</title>
 
-    <!-- Atatus: 不要なtype属性と<font>を削除 -->
-    <script src="https://dmc1acwvwny3.cloudfront.net/atatus-spa.js"></script>
-    <script>
-        atatus.config('3b8a17d616d24583a30d41294ed01917').install();
-    </script>
-    <!--<script src="/script.js"></script>-->
+<meta name="description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジン登録サイト">
+<meta name="author" content="はとあげマーケット">
 
-    <!-- OGP -->
-    <meta property="og:title" content="はとあげマーケット">
-    <meta property="og:description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジンを登録サイト">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hatoage.wata.f5.si/">
-    <meta property="og:image" content="https://hatoage.wata.f5.si/assets/logo.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="はとあげマーケットメール">
-    <meta name="twitter:description" content="美味しいはとあげを出来たてで提供する架空のコンビニ公式サイトのメールマガジン登録サイト">
-    <meta name="twitter:image" content="https://hatoage.wata777.f5.si/assets/logo.png">
+<link rel="canonical" href="https://hatoage.wata777.f5.si/">
+<link rel="icon" href="/assets/logo.png">
+<link rel="stylesheet" href="/style.css">
+
+<!-- OGP -->
+<meta property="og:title" content="はとあげマーケット">
+<meta property="og:description" content="はとあげ公式メールマガジン登録">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://hatoage.wata777.f5.si/assets/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+
 <style>
 body {
   font-family: sans-serif;
@@ -64,6 +55,7 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <%- include("partials/header") %>
@@ -71,15 +63,15 @@ button {
 <div class="box">
   <h2>📮 はとあげ メール登録</h2>
   <p>メールアドレスを入力してください</p>
-  <input id="email" placeholder="example@gmail.com">
+  <input id="emailInput" placeholder="example@gmail.com">
   <button onclick="sendOtp()">認証コードを送信</button>
 </div>
 
-<!-- OTP オーバーレイ -->
+<!-- OTP -->
 <div class="overlay" id="otpOverlay">
   <div class="box">
     <h3>認証コード入力</h3>
-    <input id="otp" placeholder="6桁コード">
+    <input id="otpInput" placeholder="6桁コード">
     <button onclick="verifyOtp()">確認</button>
   </div>
 </div>
@@ -92,32 +84,50 @@ button {
   </div>
 </div>
 
-<a href="/" id="btn" class="btn-link">ホーム</a>
+<a href="/" class="btn-link">ホーム</a>
 
 <script>
 async function sendOtp() {
-  await fetch("/mail/send", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ email: email.value })
+  const email = document.getElementById("emailInput").value.trim();
+  if (!email) {
+    alert("メールアドレスを入力してください");
+    return;
+  }
+
+  const res = await fetch("/mail/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
   });
-  otpOverlay.style.display = "flex";
+
+  if (!res.ok) {
+    alert("送信に失敗しました");
+    return;
+  }
+
+  document.getElementById("otpOverlay").style.display = "flex";
 }
 
 async function verifyOtp() {
-  const r = await fetch("/mail/verify", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      email: email.value,
-      otp: otp.value
-    })
+  const email = document.getElementById("emailInput").value.trim();
+  const otp = document.getElementById("otpInput").value.trim();
+
+  if (!otp) {
+    alert("認証コードを入力してください");
+    return;
+  }
+
+  const res = await fetch("/mail/verify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp })
   });
 
-  const j = await r.json();
-  if (j.ok) {
-    otpOverlay.style.display = "none";
-    doneOverlay.style.display = "flex";
+  const json = await res.json();
+
+  if (json.ok) {
+    document.getElementById("otpOverlay").style.display = "none";
+    document.getElementById("doneOverlay").style.display = "flex";
   } else {
     alert("認証コードが違います");
   }
