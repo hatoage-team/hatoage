@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import basicAuth from "./middleware/basicAuth.js";
 
@@ -22,7 +23,6 @@ const jsonHeaders = () => ({
 });
 
 app.get("/", (_, res) => res.render("index"));
-app.get("/mail", (_, res) => res.render("mail"));
 app.get("/manifest.json", (req, res) => {
   res.type("application/manifest+json");
   res.sendFile(process.cwd() + "/public/manifest.json");
@@ -55,6 +55,53 @@ app.get("/order/:slug", async (req, res) => {
 app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}`);
   });
+
+const WORKERS_MAIL = "https://hatoage.wata777.workers.dev/mail";
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
+  }
+});
+
+app.get("/mail", (req, res) => {
+  res.render("mail", { state: "input" });
+});
+
+app.post("/mail", async (req, res) => {
+  try {
+    const r = await fetch(WORKERS_MAIL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Internal-Key": process.env.INTERNAL_KEY
+      },
+      body: JSON.stringify(req.body)
+    });
+
+    const data = await r.json();
+
+    if (data.state === "otp_issued" && data.otp) {
+      let html = fs.readFileSync("./mailer/otp.html", "utf8");
+      html = html.replace("{{OTP}}", data.otp);
+
+      await transporter.sendMail({
+        to: req.body.email,
+        subject: "【はとあげメール】認証コード",
+        html
+      });
+    }
+
+    res.render("mail", data);
+  } catch (e) {
+    res.render("mail", {
+      state: "error",
+      message: e.message
+    });
+  }
+});
 
 app.get("/admin", basicAuth, async (req, res) => {
   const product = await fetch(
