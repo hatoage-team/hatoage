@@ -33,7 +33,7 @@ app.get("/manifest.json", (req, res) => {
 const API = "https://hatoage.wata777.workers.dev";
 
 app.get("/products", async (_, res) => {
-  const product = await fetch(`${API}/products/`).then(r => r.json());
+  const product = await fetch(`${API}/products`).then(r => r.json());
   res.render("products", { product });
 });
 
@@ -56,7 +56,7 @@ app.get("/order/:slug", async (req, res) => {
 });
 
 app.get("/api/products", cors(), (_, res) => {
-  res.redirect(301, `${API}/products/`);
+  res.redirect(301, `${API}/products`);
   });
 
 /* ===== SMTP ===== */
