@@ -17,7 +17,7 @@ app.set("trust proxy", 1);
 process.on("unhandledRejection", console.error);
 process.on("uncaughtException", console.error);
 
-const APITOKEN = prosess.env.RENDER_TOKEN;
+const APITOKEN = process.env.RENDER_TOKEN;
 
 const jsonHeaders = () => ({
   "Content-Type": "application/json",
