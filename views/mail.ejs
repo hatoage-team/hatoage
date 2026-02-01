@@ -127,9 +127,24 @@ async function verifyOtp() {
 
   if (json.ok) {
     document.getElementById("otpOverlay").style.display = "none";
-    document.getElementById("doneOverlay").style.display = "flex";
+    
+    // ステータスに応じて完了画面の文言を変える
+    const doneOverlay = document.getElementById("doneOverlay");
+    const title = doneOverlay.querySelector("h3");
+    const message = doneOverlay.querySelector("p");
+
+    if (json.status === "dup") {
+      title.innerText = "ℹ️ 登録済み";
+      message.innerText = "このアドレスは既に登録されています。";
+    } else {
+      title.innerText = "✅ 登録完了";
+      message.innerText = "メール登録が完了しました！明日からお届けします🕊";
+    }
+
+    doneOverlay.style.display = "flex";
   } else {
-    alert("認証コードが違います");
+    // サーバーから詳細なエラーが返ってきている場合はそれを表示
+    alert(json.error || "認証に失敗しました。もう一度やり直してください。");
   }
 }
 </script>
