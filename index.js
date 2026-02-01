@@ -62,7 +62,7 @@ app.get("/api/products", cors(), (_, res) => {
 /* ===== SMTP ===== */
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
+  port: 2525,
   secure: true,
   auth: {
     user: process.env.SMTP_USER,
