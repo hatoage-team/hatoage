@@ -260,7 +260,7 @@ app.get("/admin/mail/test", basicAuth, async (req, res) => {
   const html = buildMail(products);
 
   for (const s of subs) {
-    await transporter.sendMail({
+    await sendMail({
       from: "はとあげマーケット <hato.age.3n@gmail.com>",
       to: 'wataamee777@gmail.com',
       subject: "今日のはとあげ 🕊",
