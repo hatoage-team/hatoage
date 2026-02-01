@@ -249,6 +249,7 @@ app.get("/admin/mail/test", basicAuth, async (req, res) => {
   }
 
   console.log("✅ 送信完了");
+  res.status(204).send("send now");
 });
 
 const PORT = process.env.PORT;
