@@ -59,7 +59,6 @@ app.get("/order/:slug", async (req, res) => {
 app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
-import { google } from "googleapis";
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GMAIL_CLIENT_ID,
