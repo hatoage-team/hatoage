@@ -118,7 +118,6 @@ app.post("/mail/send", async (req, res) => {
   const { otp } = await r.json();
 
   await sendMail({
-    from: "はとあげマーケット <hato.age.3n@gmail.com>",
     to: email,
     subject: "【はとあげメール】認証コード",
     html: `
