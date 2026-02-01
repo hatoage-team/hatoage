@@ -210,10 +210,10 @@ cron.schedule("0 10 * * *", async () => {
 
   const headers = { Authorization:`Bearer ${APITOKEN}` };
 
-  const products = await fetch(`${WORKERS}/products`)
+  const products = await fetch(`${API}/products`)
     .then(r=>r.json());
 
-  const subs = await fetch(`${WORKERS}/mail`,{headers})
+  const subs = await fetch(`${API}/mail`,{headers})
     .then(r=>r.json());
 
   const html = buildMail(products);
@@ -232,10 +232,10 @@ cron.schedule("0 10 * * *", async () => {
 app.get("/admin/mail/test", basicAuth, async (req, res) => {
   const headers = { Authorization:`Bearer ${APITOKEN}` };
 
-  const products = await fetch(`${WORKERS}/products`)
+  const products = await fetch(`${API}/products`)
     .then(r=>r.json());
 
-  const subs = await fetch(`${WORKERS}/mail`,{headers})
+  const subs = await fetch(`${API}/mail`,{headers})
     .then(r=>r.json());
 
   const html = buildMail(products);
