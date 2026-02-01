@@ -26,6 +26,18 @@ const jsonHeaders = () => ({
   "Accept": "application/json"
 });
 
+/* ===== APIトークン認証ミドルウェア ===== */
+const verifyApiToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  
+  // "Bearer トークン" の形式で来ることを想定
+  if (!authHeader || authHeader !== `Bearer ${APITOKEN}`) {
+    console.error("Unauthorized access attempt");
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  next();
+};
+
 app.get("/", (_, res) => res.render("index"));
 app.get("/manifest.json", (req, res) => {
   res.type("application/manifest+json");
@@ -106,7 +118,7 @@ app.get("/mail", (_, res) => {
 });
 
 /* ===== OTP送信 ===== */
-app.post("/mail/send", async (req, res) => {
+app.post("/mail/send", verifyApiToken, async (req, res) => {
   const { email } = req.body;
 
   const r = await fetch(`${API}/mail/otp`, {
@@ -133,7 +145,7 @@ app.post("/mail/send", async (req, res) => {
 });
 
 /* ===== OTP確認 ===== */
-app.post("/mail/verify", async (req, res) => {
+app.post("/mail/verify", verifyApiToken, async (req, res) => {
   const { email, otp } = req.body;
 
   const r = await fetch(`${API}/mail/verify`, {
@@ -153,6 +165,64 @@ app.get("/admin", basicAuth, async (req, res) => {
   res.render("admin", { product });
   });
 app.use(express.urlencoded({ extended: true }));
+
+/* ===== 登録完了・通知メール送信 ===== */
+app.post("/mail/done", verifyApiToken, async (req, res) => {
+  const { email, status } = req.body;
+
+  let subject = "";
+  let messageBody = "";
+
+  if (status === "done") {
+    subject = "【はとあげメール】登録完了のお知らせ";
+    messageBody = `
+      <p>はとあげメールへのご登録ありがとうございます！</p>
+      <p><strong>登録が完了しました。</strong></p>
+      <p>明日から毎日10時に「今日のはとあげ」をお届けします。お楽しみに！🕊</p>
+    `;
+  } 
+  else if (status === "dup") {
+    subject = "【はとあげメール】登録状況のご案内";
+    messageBody = `
+      <p>いつもご利用ありがとうございます。</p>
+      <p>このメールアドレスは<strong>既に登録されているため、設定に変更はありません。</strong></p>
+      <p>引き続き「はとあげメール」をお楽しみください。</p>
+    `;
+  } 
+  else if (status === "error") {
+    subject = "【はとあげメール】登録エラーのお知らせ";
+    messageBody = `
+      <div style="color: #d32f2f; border: 1px solid #d32f2f; padding: 10px;">
+        <p>申し訳ございません。登録処理中にエラーが発生しました。</p>
+        <p><strong>もう一度最初からお試しください。</strong></p>
+        <p style="font-size: 0.9em; margin-top: 15px; color: #666;">
+          ※もしこのエラーが何度も続く場合は、お手数ですが Discord で <strong>@わたあめえ</strong> に報告してください。
+        </p>
+      </div>
+    `;
+  } else {
+    return res.status(400).json({ error: "Invalid status" });
+  }
+
+  try {
+    await sendMail({
+      to: email,
+      subject: subject,
+      html: `
+        <div style="font-family:sans-serif; line-height: 1.6;">
+          <h2>はとあげマーケット</h2>
+          ${messageBody}
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="font-size: 12px; color: #888;">※このメールに心当たりがない場合は破棄してください。</p>
+        </div>
+      `
+    });
+    res.json({ ok: true });
+  } catch (error) {
+    console.error("Mail send error:", error);
+    res.status(500).json({ ok: false, error: "Failed to send email" });
+  }
+});
 
 app.post("/admin/products", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
