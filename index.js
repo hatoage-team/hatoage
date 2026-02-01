@@ -71,22 +71,24 @@ oAuth2Client.setCredentials({
 
 const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 
+function encodeHeader(str) {
+  return `=?UTF-8?B?${Buffer.from(str).toString("base64")}?=`;
+}
+
 async function sendMail({ to, subject, html }) {
-  if (!to || !to.includes("@")) {
-    throw new Error(`Invalid email: ${to}`);
-  }
+  const from = encodeHeader("はとあげマーケット") + ` <${process.env.GMAIL_FROM}>`;
+  const encodedSubject = encodeHeader(subject);
 
   const message =
-    `From: ${process.env.GMAIL_FROM}\r\n` +
+    `From: ${from}\r\n` +
     `To: ${to}\r\n` +
-    `Subject: ${subject}\r\n` +
+    `Subject: ${encodedSubject}\r\n` +
     `MIME-Version: 1.0\r\n` +
     `Content-Type: text/html; charset="UTF-8"\r\n` +
     `\r\n` +
     html;
 
-  const encodedMessage = Buffer
-    .from(message)
+  const raw = Buffer.from(message)
     .toString("base64")
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
@@ -94,7 +96,7 @@ async function sendMail({ to, subject, html }) {
 
   await gmail.users.messages.send({
     userId: "me",
-    requestBody: { raw: encodedMessage },
+    requestBody: { raw },
   });
 }
 
