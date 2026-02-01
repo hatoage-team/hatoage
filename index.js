@@ -4,6 +4,7 @@ import fs from "fs";
 import cron from "node-cron";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import { google } from "googleapis";
 import basicAuth from "./middleware/basicAuth.js";
 
 dotenv.config();
@@ -59,16 +60,34 @@ app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
 
-/* ===== SMTP ===== */
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 2525,
-  secure: true,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
-  }
+const oAuth2Client = new google.auth.OAuth2(
+  process.env.GMAIL_CLIENT_ID,
+  process.env.GMAIL_CLIENT_SECRET
+);
+
+oAuth2Client.setCredentials({
+  refresh_token: process.env.GMAIL_TOKEN,
 });
+
+const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
+
+async function sendMail(to, subject, html) {
+  const raw = Buffer.from(
+`From: はとあげマーケット <hato.age.3n@gmail.com>
+To: ${to}
+Subject: ${subject}
+MIME-Version: 1.0
+Content-Type: text/html; charset="UTF-8"
+
+${html}`
+  ).toString("base64url");
+
+  await gmail.users.messages.send({
+    userId: "me",
+    requestBody: { raw },
+  });
+}
+
 
 /* ===== ページ表示 ===== */
 app.get("/mail", (_, res) => {
@@ -87,7 +106,7 @@ app.post("/mail/send", async (req, res) => {
 
   const { otp } = await r.json();
 
-  await transporter.sendMail({
+  await sendMail({
     from: "はとあげマーケット <hato.age.3n@gmail.com>",
     to: email,
     subject: "【はとあげメール】認証コード",
@@ -219,7 +238,7 @@ cron.schedule("0 10 * * *", async () => {
   const html = buildMail(products);
 
   for (const s of subs) {
-    await transporter.sendMail({
+    await sendMail({
       from: "はとあげマーケット <hato.age.3n@gmail.com>",
       to: s.email,
       subject: "今日のはとあげ 🕊",
