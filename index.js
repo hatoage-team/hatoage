@@ -72,14 +72,17 @@ oAuth2Client.setCredentials({
 
 const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 
-export async function sendMail({ to, subject, html }) {
+async function sendMail({ to, subject, html }) {
+  if (!to || !to.includes("@")) {
+    throw new Error(`Invalid email: ${to}`);
+  }
+
   const message =
-    `From: はとあげマーケット <hato.age.3n@gmail.com>\r\n` +
+    `From: ${process.env.GMAIL_FROM}\r\n` +
     `To: ${to}\r\n` +
     `Subject: ${subject}\r\n` +
     `MIME-Version: 1.0\r\n` +
     `Content-Type: text/html; charset="UTF-8"\r\n` +
-    `Content-Transfer-Encoding: 7bit\r\n` +
     `\r\n` +
     html;
 
@@ -92,9 +95,7 @@ export async function sendMail({ to, subject, html }) {
 
   await gmail.users.messages.send({
     userId: "me",
-    requestBody: {
-      raw: encodedMessage,
-    },
+    requestBody: { raw: encodedMessage },
   });
 }
 
@@ -248,7 +249,6 @@ cron.schedule("0 10 * * *", async () => {
 
   for (const s of subs) {
     await sendMail({
-      from: "はとあげマーケット <hato.age.3n@gmail.com>",
       to: s.email,
       subject: "今日のはとあげ 🕊",
       html
@@ -270,7 +270,6 @@ app.get("/admin/mail/test", basicAuth, async (req, res) => {
 
   for (const s of subs) {
     await sendMail({
-      from: "はとあげマーケット <hato.age.3n@gmail.com>",
       to: 'wataamee777@gmail.com',
       subject: "今日のはとあげ 🕊",
       html
