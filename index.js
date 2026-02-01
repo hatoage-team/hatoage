@@ -323,7 +323,9 @@ cron.schedule("0 10 * * *", async () => {
       subject: "今日のはとあげ 🕊",
       html
     });
-  }
+  }, {
+  timezone: "Asia/Tokyo" // これを追加！
+});
 
   console.log("✅ 送信完了");
 });
