@@ -59,6 +59,7 @@ app.get("/order/:slug", async (req, res) => {
 app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
+import { google } from "googleapis";
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GMAIL_CLIENT_ID,
@@ -71,23 +72,31 @@ oAuth2Client.setCredentials({
 
 const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 
-async function sendMail(to, subject, html) {
-  const raw = Buffer.from(
-`From: はとあげマーケット <hato.age.3n@gmail.com>
-To: ${to}
-Subject: ${subject}
-MIME-Version: 1.0
-Content-Type: text/html; charset="UTF-8"
+export async function sendMail({ to, subject, html }) {
+  const message =
+    `From: はとあげマーケット <hato.age.3n@gmail.com>\r\n` +
+    `To: ${to}\r\n` +
+    `Subject: ${subject}\r\n` +
+    `MIME-Version: 1.0\r\n` +
+    `Content-Type: text/html; charset="UTF-8"\r\n` +
+    `Content-Transfer-Encoding: 7bit\r\n` +
+    `\r\n` +
+    html;
 
-${html}`
-  ).toString("base64url");
+  const encodedMessage = Buffer
+    .from(message)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 
   await gmail.users.messages.send({
     userId: "me",
-    requestBody: { raw },
+    requestBody: {
+      raw: encodedMessage,
+    },
   });
 }
-
 
 /* ===== ページ表示 ===== */
 app.get("/mail", (_, res) => {
