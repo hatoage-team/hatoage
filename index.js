@@ -145,7 +145,7 @@ app.post("/mail/send", async (req, res) => {
 });
 
 /* ===== OTP確認 ===== */
-app.post("/mail/verify", verifyApiToken, async (req, res) => {
+app.post("/mail/verify", async (req, res) => {
   const { email, otp } = req.body;
 
   const r = await fetch(`${API}/mail/verify`, {
