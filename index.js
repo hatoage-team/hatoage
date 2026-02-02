@@ -306,29 +306,22 @@ function buildMail(products){
 // ===== CRON =====
 cron.schedule("0 10 * * *", async () => {
   console.log("📮 はとあげメール送信開始");
-
-  const headers = { Authorization:`Bearer ${APITOKEN}` };
-
-  const products = await fetch(`${API}/products`)
-    .then(r=>r.json());
-
-  const subs = await fetch(`${API}/mail`,{headers})
-    .then(r=>r.json());
-
-  const html = buildMail(products);
-
-  for (const s of subs) {
-    await sendMail({
-      to: s.email,
-      subject: "今日のはとあげ 🕊",
-      html
-    });
-  }, {
-  timezone: "Asia/Tokyo" // これを追加！
+  try {
+    const headers = { Authorization: `Bearer ${APITOKEN}` };
+    const products = await fetch(`${API}/products`).then(r => r.json());
+    const subs = await fetch(`${API}/mail`, { headers }).then(r => r.json());
+    const html = buildMail(products);
+    for (const s of subs) {
+      await sendMail({ to: s.email, subject: "今日のはとあげ 🕊", html });
+    }
+    console.log("✅ 送信完了");
+  } catch (e) {
+    console.error("Cron Error:", e);
+  }
+}, {
+  timezone: "Asia/Tokyo"
 });
 
-  console.log("✅ 送信完了");
-});
 app.get("/admin/mail/test", basicAuth, async (req, res) => {
   const headers = { Authorization:`Bearer ${APITOKEN}` };
 
