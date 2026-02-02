@@ -118,7 +118,7 @@ app.get("/mail", (_, res) => {
 });
 
 /* ===== OTP送信 ===== */
-app.post("/mail/send", verifyApiToken, async (req, res) => {
+app.post("/mail/send", async (req, res) => {
   const { email } = req.body;
 
   const r = await fetch(`${API}/mail/otp`, {
