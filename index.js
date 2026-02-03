@@ -291,7 +291,7 @@ function buildMail(products){
     ${picks.map(p=>`
       <div style="border:1px solid #ddd;padding:10px;margin:10px 0">
         <h3>${p.name}</h3>
-        <img src="${p.image}" width="200">
+        <img src="https://hatoage.wata777.f5.si/assets/${p.image}" width="200">
         <p>${p.amount}</p>
         <strong>¥${p.price}</strong><br>
         <a href="https://hatoage.wata777.f5.si/order/${p.slug}">
