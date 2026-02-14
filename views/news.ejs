@@ -12,23 +12,29 @@
 <body>
 <%- include("partials/header") %>
 
-<main>
-  <h1 class="fade-in">ニュース</h1>
+<main class="news-main">
+  <section class="news-hero fade-in">
+    <p class="news-tag">HATOAGE BLOG</p>
+    <h1>ニュース</h1>
+    <p class="news-subtitle">はとあげマートの最新情報・お知らせをお届けします。</p>
+  </section>
 
   <% if (error) { %>
-    <p style="color: #d32f2f;" class="fade-in"><%= error %></p>
+    <p class="news-error fade-in"><%= error %></p>
   <% } %>
 
   <% if (!news || news.length === 0) { %>
     <p class="fade-in">現在、お知らせはありません。</p>
   <% } %>
 
-  <section>
+  <section class="news-list">
     <% news.forEach(item => { %>
-      <article class="product fade-in">
-        <p><strong><%= item.date %></strong></p>
-        <h2><%= item.title %></h2>
-        <p><%= item.body %></p>
+      <article class="news-post fade-in">
+        <header class="news-post-header">
+          <time datetime="<%= item.date %>" class="news-date"><%= item.date %></time>
+          <h2><%= item.title %></h2>
+        </header>
+        <p class="news-body"><%= item.body %></p>
       </article>
     <% }) %>
   </section>

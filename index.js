@@ -25,6 +25,11 @@ const jsonHeaders = () => ({
   "Accept": "application/json"
 });
 
+const authJsonHeaders = () => ({
+  ...jsonHeaders(),
+  "Authorization": `Bearer ${APITOKEN}`
+});
+
 const parseApiBody = async (response) => {
   const text = await response.text();
   try {
@@ -148,7 +153,7 @@ app.post("/mail/send", async (req, res) => {
 
   const r = await fetch(`${API}/mail/otp`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" , "Authorization": "Bearer ${APITOKEN}" },
+    headers: authJsonHeaders(),
     body: JSON.stringify({ email })
   });
 
@@ -175,7 +180,7 @@ app.post("/mail/verify", async (req, res) => {
 
   const r = await fetch(`${API}/mail/verify`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" , "Authorization": "Bearer ${APITOKEN}" },
+    headers: authJsonHeaders(),
     body: JSON.stringify({ email, otp })
   });
 
@@ -257,7 +262,7 @@ app.post("/mail/done", verifyApiToken, async (req, res) => {
 app.post("/admin/products", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "POST",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify(req.body)
   });
   if (!r.ok) {
@@ -269,7 +274,7 @@ app.post("/admin/products", basicAuth, async (req, res) => {
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "PUT",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify({
       slug: req.params.slug,
       ...req.body
@@ -281,7 +286,7 @@ app.put("/admin/products/:slug", basicAuth, async (req, res) => {
 app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "PATCH",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify({
       slug: req.params.slug,
       ...req.body
@@ -293,7 +298,7 @@ app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
 app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "DELETE",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify({
       slug: req.params.slug
     })
