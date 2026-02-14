@@ -21,6 +21,7 @@
 <hr>
 
 <h2>登録済み商品</h2>
+<p id="status"></p>
 
 <% product.forEach(p => { %>
   <div data-slug="<%= p.slug %>">
@@ -35,6 +36,11 @@
 <% }) %>
 
 <script>
+function showStatus(message) {
+  const status = document.getElementById("status");
+  status.textContent = message;
+}
+
 async function update(slug) {
   const box = document.querySelector(`[data-slug="${slug}"]`);
 
@@ -45,19 +51,28 @@ async function update(slug) {
     image: box.querySelector(".image").value
   };
 
-  await fetch(`/admin/products/${slug}`, {
-    method: "PUT",
+  const response = await fetch(`/admin/products/${slug}`, {
+    method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
 
-  alert("更新した");
+  const result = await response.json();
+  showStatus(response.ok ? "更新しました" : `更新に失敗しました: ${result.message || "unknown error"}`);
 }
 
 async function remove(slug) {
   if (!confirm("削除する？")) return;
 
-  await fetch(`/admin/products/${slug}`, { method: "DELETE" });
+  const response = await fetch(`/admin/products/${slug}`, { method: "DELETE" });
+  const result = await response.json();
+
+  if (!response.ok) {
+    showStatus(`削除に失敗しました: ${result.message || "unknown error"}`);
+    return;
+  }
+
+  showStatus("削除しました");
   location.reload();
 }
 </script>
