@@ -42,18 +42,25 @@ export default {
          1.5 NEWS (GET/POST)
       ===================== */
       if (method === "GET" && pathname === "/news") {
-        const { results } = await env.DB
-          .prepare("SELECT id, uuid, date, title, body FROM news ORDER BY date DESC, id DESC")
-          .all();
+        const hasUuidColumn = await newsHasUuidColumn(env);
+        const query = hasUuidColumn
+          ? "SELECT id, uuid, date, title, body FROM news ORDER BY date DESC, id DESC"
+          : "SELECT id, CAST(id AS TEXT) AS uuid, date, title, body FROM news ORDER BY date DESC, id DESC";
+
+        const { results } = await env.DB.prepare(query).all();
         return json(results);
       }
 
       if (method === "GET" && pathname.startsWith("/news/")) {
         const key = decodeURIComponent(pathname.split("/")[2] || "");
-        const item = await env.DB
-          .prepare("SELECT id, uuid, date, title, body FROM news WHERE uuid = ? OR CAST(id AS TEXT) = ?")
-          .bind(key, key)
-          .first();
+        const hasUuidColumn = await newsHasUuidColumn(env);
+
+        const query = hasUuidColumn
+          ? "SELECT id, uuid, date, title, body FROM news WHERE uuid = ? OR CAST(id AS TEXT) = ?"
+          : "SELECT id, CAST(id AS TEXT) AS uuid, date, title, body FROM news WHERE CAST(id AS TEXT) = ?";
+
+        const stmt = hasUuidColumn ? env.DB.prepare(query).bind(key, key) : env.DB.prepare(query).bind(key);
+        const item = await stmt.first();
 
         if (!item) {
           throw new HttpError("not found", 404);
@@ -64,19 +71,27 @@ export default {
 
       if (method === "POST" && pathname === "/news") {
         authRender(req, env);
-        const { uuid, date, title, body } = await req.json();
+        const { date, title, body } = await req.json();
 
         if (!date || !title || !body) {
           throw new HttpError("date, title and body required", 400);
         }
 
-        const newsUuid = uuid || crypto.randomUUID();
+        const hasUuidColumn = await newsHasUuidColumn(env);
+        if (hasUuidColumn) {
+          const newsUuid = crypto.randomUUID();
+          await env.DB.prepare(
+            "INSERT INTO news (uuid, date, title, body) VALUES (?, ?, ?, ?)"
+          ).bind(newsUuid, date, title, body).run();
+          return json({ ok: true, uuid: newsUuid }, 201);
+        }
 
-        await env.DB.prepare(
-          "INSERT INTO news (uuid, date, title, body) VALUES (?, ?, ?, ?)"
-        ).bind(newsUuid, date, title, body).run();
+        const result = await env.DB.prepare(
+          "INSERT INTO news (date, title, body) VALUES (?, ?, ?)"
+        ).bind(date, title, body).run();
 
-        return json({ ok: true, uuid: newsUuid }, 201);
+        const id = result.meta?.last_row_id ?? null;
+        return json({ ok: true, uuid: id ? String(id) : null }, 201);
       }
 
       /* =====================
@@ -178,6 +193,12 @@ export default {
     }
   }
 };
+
+
+async function newsHasUuidColumn(env) {
+  const { results } = await env.DB.prepare("PRAGMA table_info(news)").all();
+  return results.some((column) => column.name === "uuid");
+}
 
 async function notifyMainServer(email, status, env) {
   const mainServerUrl = env.MAIN_SERVER_URL || "https://hatoage.wata777.f5.si/mail/done";

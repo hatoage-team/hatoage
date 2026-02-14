@@ -219,14 +219,17 @@ app.post("/mail/verify", async (req, res) => {
   res.json(j);
 });
 app.get("/admin", basicAuth, async (req, res) => {
+  const statusMessage = typeof req.query.status === "string" ? req.query.status : "";
+
   try {
     const product = await fetch(`${API}/products`).then(r => r.json());
-    res.render("admin", { product, error: "" });
+    res.render("admin", { product, error: "", statusMessage });
   } catch (error) {
     console.error("Admin products load error:", error);
     res.status(502).render("admin", {
       product: [],
-      error: "商品一覧の取得に失敗しました。時間をおいて再度お試しください。"
+      error: "商品一覧の取得に失敗しました。時間をおいて再度お試しください。",
+      statusMessage
     });
   }
 });
@@ -296,10 +299,14 @@ app.post("/admin/products", basicAuth, async (req, res) => {
     headers: authJsonHeaders(),
     body: JSON.stringify(req.body)
   });
+
+  const body = await parseApiBody(r);
   if (!r.ok) {
-    return res.status(r.status).send(await r.text());
+    const message = body.message || body.error || "商品の追加に失敗しました。";
+    return res.redirect(`/admin?status=${encodeURIComponent(`商品追加に失敗: ${message}`)}`);
   }
-  res.redirect("/admin");
+
+  res.redirect(`/admin?status=${encodeURIComponent("商品を追加しました")}`);
 });
 
 app.post("/admin/news", basicAuth, async (req, res) => {
@@ -309,11 +316,13 @@ app.post("/admin/news", basicAuth, async (req, res) => {
     body: JSON.stringify(req.body)
   });
 
+  const body = await parseApiBody(r);
   if (!r.ok) {
-    return res.status(r.status).send(await r.text());
+    const message = body.message || body.error || "ニュースの追加に失敗しました。";
+    return res.redirect(`/admin?status=${encodeURIComponent(`ニュース追加に失敗: ${message}`)}`);
   }
 
-  res.redirect("/admin");
+  res.redirect(`/admin?status=${encodeURIComponent("ニュースを追加しました")}`);
 });
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
