@@ -7,6 +7,9 @@
 <body>
 
 <h1>管理画面</h1>
+<% if (error) { %>
+  <p style="color: #d32f2f;"><%= error %></p>
+<% } %>
 
 <h2>商品追加</h2>
 <form method="POST" action="/admin/products">
@@ -18,9 +21,22 @@
   <button type="submit">追加</button>
 </form>
 
+
+<hr>
+
+<h2>ニュース追加</h2>
+<form method="POST" action="/admin/news">
+  <input name="uuid" placeholder="uuid(任意)">
+  <input name="date" type="date" required>
+  <input name="title" placeholder="ニュースタイトル" required>
+  <input name="body" placeholder="本文" required>
+  <button type="submit">追加</button>
+</form>
+
 <hr>
 
 <h2>登録済み商品</h2>
+<p id="status"></p>
 
 <% product.forEach(p => { %>
   <div data-slug="<%= p.slug %>">
@@ -35,6 +51,11 @@
 <% }) %>
 
 <script>
+function showStatus(message) {
+  const status = document.getElementById("status");
+  status.textContent = message;
+}
+
 async function update(slug) {
   const box = document.querySelector(`[data-slug="${slug}"]`);
 
@@ -45,19 +66,28 @@ async function update(slug) {
     image: box.querySelector(".image").value
   };
 
-  await fetch(`/admin/products/${slug}`, {
-    method: "PUT",
+  const response = await fetch(`/admin/products/${slug}`, {
+    method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
 
-  alert("更新した");
+  const result = await response.json();
+  showStatus(response.ok ? "更新しました" : `更新に失敗しました: ${result.message || "unknown error"}`);
 }
 
 async function remove(slug) {
   if (!confirm("削除する？")) return;
 
-  await fetch(`/admin/products/${slug}`, { method: "DELETE" });
+  const response = await fetch(`/admin/products/${slug}`, { method: "DELETE" });
+  const result = await response.json();
+
+  if (!response.ok) {
+    showStatus(`削除に失敗しました: ${result.message || "unknown error"}`);
+    return;
+  }
+
+  showStatus("削除しました");
   location.reload();
 }
 </script>
