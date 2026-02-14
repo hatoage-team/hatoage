@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import fs from "fs";
 import cron from "node-cron";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
@@ -81,13 +80,20 @@ app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
 
-app.get("/news", (_, res) => {
+app.get("/news", async (_, res) => {
   try {
-    const news = JSON.parse(fs.readFileSync("./news.json", "utf-8"));
-    res.render("news", { news });
+    const response = await fetch(`${API}/news`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch news: ${response.status}`);
+    }
+    const news = await response.json();
+    res.render("news", { news, error: "" });
   } catch (error) {
     console.error("News load error:", error);
-    res.status(500).render("news", { news: [] });
+    res.status(502).render("news", {
+      news: [],
+      error: "ニュースの取得に失敗しました。時間をおいて再度お試しください。"
+    });
   }
 });
 
