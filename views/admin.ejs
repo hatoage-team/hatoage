@@ -7,6 +7,9 @@
 <body>
 
 <h1>管理画面</h1>
+<% if (error) { %>
+  <p style="color: #d32f2f;"><%= error %></p>
+<% } %>
 
 <h2>商品追加</h2>
 <form method="POST" action="/admin/products">

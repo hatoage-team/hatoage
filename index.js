@@ -81,6 +81,16 @@ app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
 
+app.get("/news", (_, res) => {
+  try {
+    const news = JSON.parse(fs.readFileSync("./news.json", "utf-8"));
+    res.render("news", { news });
+  } catch (error) {
+    console.error("News load error:", error);
+    res.status(500).render("news", { news: [] });
+  }
+});
+
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GMAIL_CLIENT_ID,
   process.env.GMAIL_CLIENT_SECRET
@@ -167,12 +177,17 @@ app.post("/mail/verify", async (req, res) => {
   res.json(j);
 });
 app.get("/admin", basicAuth, async (req, res) => {
-  const product = await fetch(
-    `${API}/products`
-    ).then(r => r.json());
-
-  res.render("admin", { product });
-  });
+  try {
+    const product = await fetch(`${API}/products`).then(r => r.json());
+    res.render("admin", { product, error: "" });
+  } catch (error) {
+    console.error("Admin products load error:", error);
+    res.status(502).render("admin", {
+      product: [],
+      error: "商品一覧の取得に失敗しました。時間をおいて再度お試しください。"
+    });
+  }
+});
 app.use(express.urlencoded({ extended: true }));
 
 /* ===== 登録完了・通知メール送信 ===== */

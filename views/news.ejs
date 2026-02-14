@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ニュース - はとあげマート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="はとあげマーケットの最新ニュース一覧です。">
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/script.js"></script>
+  <link rel="icon" href="/assets/favicon.ico">
+</head>
+<body>
+<%- include("partials/header") %>
+
+<main>
+  <h1 class="fade-in">ニュース</h1>
+
+  <% if (!news || news.length === 0) { %>
+    <p class="fade-in">現在、お知らせはありません。</p>
+  <% } %>
+
+  <section>
+    <% news.forEach(item => { %>
+      <article class="product fade-in">
+        <p><strong><%= item.date %></strong></p>
+        <h2><%= item.title %></h2>
+        <p><%= item.body %></p>
+      </article>
+    <% }) %>
+  </section>
+</main>
+
+<%- include("partials/footer") %>
+</body>
+</html>
