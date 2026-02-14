@@ -30,11 +30,13 @@
   <section class="news-list">
     <% news.forEach(item => { %>
       <article class="news-post fade-in">
+        <a class="news-link" href="/news/<%= item.uuid || item.id %>">
         <header class="news-post-header">
           <time datetime="<%= item.date %>" class="news-date"><%= item.date %></time>
           <h2><%= item.title %></h2>
         </header>
         <p class="news-body"><%= item.body %></p>
+        </a>
       </article>
     <% }) %>
   </section>

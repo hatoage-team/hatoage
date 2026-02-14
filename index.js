@@ -58,6 +58,25 @@ app.get("/manifest.json", (req, res) => {
 });
 const API = "https://hatoage.wata777.workers.dev";
 
+const fetchNewsList = async () => {
+  const response = await fetch(`${API}/news`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch news: ${response.status}`);
+  }
+  return response.json();
+};
+
+const fetchNewsByUuid = async (uuid) => {
+  const response = await fetch(`${API}/news/${uuid}`);
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    throw new Error(`Failed to fetch news detail: ${response.status}`);
+  }
+  return response.json();
+};
+
 app.get("/products", async (_, res) => {
   const product = await fetch(`${API}/products`).then(r => r.json());
   res.render("products", { product });
@@ -87,17 +106,29 @@ app.get("/api/products", cors(), (_, res) => {
 
 app.get("/news", async (_, res) => {
   try {
-    const response = await fetch(`${API}/news`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch news: ${response.status}`);
-    }
-    const news = await response.json();
+    const news = await fetchNewsList();
     res.render("news", { news, error: "" });
   } catch (error) {
     console.error("News load error:", error);
     res.status(502).render("news", {
       news: [],
       error: "ニュースの取得に失敗しました。時間をおいて再度お試しください。"
+    });
+  }
+});
+
+app.get("/news/:uuid", async (req, res) => {
+  try {
+    const article = await fetchNewsByUuid(req.params.uuid);
+    if (!article) {
+      return res.status(404).render("404");
+    }
+    res.render("news-detail", { article, error: "" });
+  } catch (error) {
+    console.error("News detail load error:", error);
+    res.status(502).render("news-detail", {
+      article: null,
+      error: "記事の取得に失敗しました。時間をおいて再度お試しください。"
     });
   }
 });

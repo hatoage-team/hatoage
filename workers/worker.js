@@ -43,9 +43,23 @@ export default {
       ===================== */
       if (method === "GET" && pathname === "/news") {
         const { results } = await env.DB
-          .prepare("SELECT id, date, title, body FROM news ORDER BY date DESC, id DESC")
+          .prepare("SELECT id, uuid, date, title, body FROM news ORDER BY date DESC, id DESC")
           .all();
         return json(results);
+      }
+
+      if (method === "GET" && pathname.startsWith("/news/")) {
+        const key = decodeURIComponent(pathname.split("/")[2] || "");
+        const item = await env.DB
+          .prepare("SELECT id, uuid, date, title, body FROM news WHERE uuid = ? OR CAST(id AS TEXT) = ?")
+          .bind(key, key)
+          .first();
+
+        if (!item) {
+          throw new HttpError("not found", 404);
+        }
+
+        return json(item);
       }
 
       /* =====================
