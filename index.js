@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import fs from "fs";
 import cron from "node-cron";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
@@ -26,6 +25,20 @@ const jsonHeaders = () => ({
   "Accept": "application/json"
 });
 
+const authJsonHeaders = () => ({
+  ...jsonHeaders(),
+  "Authorization": `Bearer ${APITOKEN}`
+});
+
+const parseApiBody = async (response) => {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { message: text };
+  }
+};
+
 /* ===== APIトークン認証ミドルウェア ===== */
 const verifyApiToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -44,6 +57,25 @@ app.get("/manifest.json", (req, res) => {
   res.sendFile(process.cwd() + "/public/manifest.json");
 });
 const API = "https://hatoage.wata777.workers.dev";
+
+const fetchNewsList = async () => {
+  const response = await fetch(`${API}/news`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch news: ${response.status}`);
+  }
+  return response.json();
+};
+
+const fetchNewsByUuid = async (uuid) => {
+  const response = await fetch(`${API}/news/${uuid}`);
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    throw new Error(`Failed to fetch news detail: ${response.status}`);
+  }
+  return response.json();
+};
 
 app.get("/products", async (_, res) => {
   const product = await fetch(`${API}/products`).then(r => r.json());
@@ -71,6 +103,35 @@ app.get("/order/:slug", async (req, res) => {
 app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
+
+app.get("/news", async (_, res) => {
+  try {
+    const news = await fetchNewsList();
+    res.render("news", { news, error: "" });
+  } catch (error) {
+    console.error("News load error:", error);
+    res.status(502).render("news", {
+      news: [],
+      error: "ニュースの取得に失敗しました。時間をおいて再度お試しください。"
+    });
+  }
+});
+
+app.get("/news/:uuid", async (req, res) => {
+  try {
+    const article = await fetchNewsByUuid(req.params.uuid);
+    if (!article) {
+      return res.status(404).render("404");
+    }
+    res.render("news-detail", { article, error: "" });
+  } catch (error) {
+    console.error("News detail load error:", error);
+    res.status(502).render("news-detail", {
+      article: null,
+      error: "記事の取得に失敗しました。時間をおいて再度お試しください。"
+    });
+  }
+});
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GMAIL_CLIENT_ID,
@@ -123,7 +184,7 @@ app.post("/mail/send", async (req, res) => {
 
   const r = await fetch(`${API}/mail/otp`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" , "Authorization": "Bearer ${APITOKEN}" },
+    headers: authJsonHeaders(),
     body: JSON.stringify({ email })
   });
 
@@ -150,7 +211,7 @@ app.post("/mail/verify", async (req, res) => {
 
   const r = await fetch(`${API}/mail/verify`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" , "Authorization": "Bearer ${APITOKEN}" },
+    headers: authJsonHeaders(),
     body: JSON.stringify({ email, otp })
   });
 
@@ -158,12 +219,20 @@ app.post("/mail/verify", async (req, res) => {
   res.json(j);
 });
 app.get("/admin", basicAuth, async (req, res) => {
-  const product = await fetch(
-    `${API}/`
-    ).then(r => r.json());
+  const statusMessage = typeof req.query.status === "string" ? req.query.status : "";
 
-  res.render("admin", { product });
-  });
+  try {
+    const product = await fetch(`${API}/products`).then(r => r.json());
+    res.render("admin", { product, error: "", statusMessage });
+  } catch (error) {
+    console.error("Admin products load error:", error);
+    res.status(502).render("admin", {
+      product: [],
+      error: "商品一覧の取得に失敗しました。時間をおいて再度お試しください。",
+      statusMessage
+    });
+  }
+});
 app.use(express.urlencoded({ extended: true }));
 
 /* ===== 登録完了・通知メール送信 ===== */
@@ -227,57 +296,68 @@ app.post("/mail/done", verifyApiToken, async (req, res) => {
 app.post("/admin/products", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "POST",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify(req.body)
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+
+  const body = await parseApiBody(r);
+  if (!r.ok) {
+    const message = body.message || body.error || "商品の追加に失敗しました。";
+    return res.redirect(`/admin?status=${encodeURIComponent(`商品追加に失敗: ${message}`)}`);
+  }
+
+  res.redirect(`/admin?status=${encodeURIComponent("商品を追加しました")}`);
+});
+
+app.post("/admin/news", basicAuth, async (req, res) => {
+  const r = await fetch(API + "/news", {
+    method: "POST",
+    headers: authJsonHeaders(),
+    body: JSON.stringify(req.body)
+  });
+
+  const body = await parseApiBody(r);
+  if (!r.ok) {
+    const message = body.message || body.error || "ニュースの追加に失敗しました。";
+    return res.redirect(`/admin?status=${encodeURIComponent(`ニュース追加に失敗: ${message}`)}`);
+  }
+
+  res.redirect(`/admin?status=${encodeURIComponent("ニュースを追加しました")}`);
 });
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "PUT",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify({
       slug: req.params.slug,
       ...req.body
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "PATCH",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify({
       slug: req.params.slug,
       ...req.body
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
     method: "DELETE",
-    headers: jsonHeaders(),
+    headers: authJsonHeaders(),
     body: JSON.stringify({
       slug: req.params.slug
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 // ===== HTMLメール生成 =====
