@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ニュース - はとあげマート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="はとあげマーケットの最新ニュース一覧です。">
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/script.js"></script>
+  <link rel="icon" href="/assets/favicon.ico">
+</head>
+<body>
+<%- include("partials/header") %>
+
+<main class="news-main">
+  <section class="news-hero fade-in">
+    <p class="news-tag">HATOAGE BLOG</p>
+    <h1>ニュース</h1>
+    <p class="news-subtitle">はとあげマートの最新情報・お知らせをお届けします。</p>
+  </section>
+
+  <% if (error) { %>
+    <p class="news-error fade-in"><%= error %></p>
+  <% } %>
+
+  <% if (!news || news.length === 0) { %>
+    <p class="fade-in">現在、お知らせはありません。</p>
+  <% } %>
+
+  <section class="news-list">
+    <% news.forEach(item => { %>
+      <article class="news-post fade-in">
+        <header class="news-post-header">
+          <time datetime="<%= item.date %>" class="news-date"><%= item.date %></time>
+          <h2><%= item.title %></h2>
+        </header>
+        <p class="news-body"><%= item.body %></p>
+      </article>
+    <% }) %>
+  </section>
+</main>
+
+<%- include("partials/footer") %>
+</body>
+</html>
