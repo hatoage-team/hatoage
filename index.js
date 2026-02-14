@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import fs from "fs";
 import cron from "node-cron";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
@@ -25,6 +24,15 @@ const jsonHeaders = () => ({
   "Content-Type": "application/json",
   "Accept": "application/json"
 });
+
+const parseApiBody = async (response) => {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { message: text };
+  }
+};
 
 /* ===== APIトークン認証ミドルウェア ===== */
 const verifyApiToken = (req, res, next) => {
@@ -71,6 +79,23 @@ app.get("/order/:slug", async (req, res) => {
 app.get("/api/products", cors(), (_, res) => {
   res.redirect(301, `${API}/products`);
   });
+
+app.get("/news", async (_, res) => {
+  try {
+    const response = await fetch(`${API}/news`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch news: ${response.status}`);
+    }
+    const news = await response.json();
+    res.render("news", { news, error: "" });
+  } catch (error) {
+    console.error("News load error:", error);
+    res.status(502).render("news", {
+      news: [],
+      error: "ニュースの取得に失敗しました。時間をおいて再度お試しください。"
+    });
+  }
+});
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GMAIL_CLIENT_ID,
@@ -158,12 +183,17 @@ app.post("/mail/verify", async (req, res) => {
   res.json(j);
 });
 app.get("/admin", basicAuth, async (req, res) => {
-  const product = await fetch(
-    `${API}/`
-    ).then(r => r.json());
-
-  res.render("admin", { product });
-  });
+  try {
+    const product = await fetch(`${API}/products`).then(r => r.json());
+    res.render("admin", { product, error: "" });
+  } catch (error) {
+    console.error("Admin products load error:", error);
+    res.status(502).render("admin", {
+      product: [],
+      error: "商品一覧の取得に失敗しました。時間をおいて再度お試しください。"
+    });
+  }
+});
 app.use(express.urlencoded({ extended: true }));
 
 /* ===== 登録完了・通知メール送信 ===== */
@@ -230,10 +260,10 @@ app.post("/admin/products", basicAuth, async (req, res) => {
     headers: jsonHeaders(),
     body: JSON.stringify(req.body)
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  if (!r.ok) {
+    return res.status(r.status).send(await r.text());
+  }
+  res.redirect("/admin");
 });
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -245,10 +275,7 @@ app.put("/admin/products/:slug", basicAuth, async (req, res) => {
       ...req.body
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -260,10 +287,7 @@ app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
       ...req.body
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -274,10 +298,7 @@ app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
       slug: req.params.slug
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 // ===== HTMLメール生成 =====
