@@ -26,6 +26,15 @@ const jsonHeaders = () => ({
   "Accept": "application/json"
 });
 
+const parseApiBody = async (response) => {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { message: text };
+  }
+};
+
 /* ===== APIトークン認証ミドルウェア ===== */
 const verifyApiToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -159,7 +168,7 @@ app.post("/mail/verify", async (req, res) => {
 });
 app.get("/admin", basicAuth, async (req, res) => {
   const product = await fetch(
-    `${API}/`
+    `${API}/products`
     ).then(r => r.json());
 
   res.render("admin", { product });
@@ -230,10 +239,10 @@ app.post("/admin/products", basicAuth, async (req, res) => {
     headers: jsonHeaders(),
     body: JSON.stringify(req.body)
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  if (!r.ok) {
+    return res.status(r.status).send(await r.text());
+  }
+  res.redirect("/admin");
 });
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -245,10 +254,7 @@ app.put("/admin/products/:slug", basicAuth, async (req, res) => {
       ...req.body
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -260,10 +266,7 @@ app.patch("/admin/products/:slug", basicAuth, async (req, res) => {
       ...req.body
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
@@ -274,10 +277,7 @@ app.delete("/admin/products/:slug", basicAuth, async (req, res) => {
       slug: req.params.slug
     })
   });
-  res.status(r.status).send(await r.text());
-  setTimeout(() => {
-    res.redirect('/admin');
-  }, 2500);
+  res.status(r.status).json(await parseApiBody(r));
 });
 
 // ===== HTMLメール生成 =====
