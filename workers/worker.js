@@ -39,7 +39,7 @@ export default {
       }
 
       /* =====================
-         1.5 NEWS (GET)
+         1.5 NEWS (GET/POST)
       ===================== */
       if (method === "GET" && pathname === "/news") {
         const { results } = await env.DB
@@ -60,6 +60,23 @@ export default {
         }
 
         return json(item);
+      }
+
+      if (method === "POST" && pathname === "/news") {
+        authRender(req, env);
+        const { uuid, date, title, body } = await req.json();
+
+        if (!date || !title || !body) {
+          throw new HttpError("date, title and body required", 400);
+        }
+
+        const newsUuid = uuid || crypto.randomUUID();
+
+        await env.DB.prepare(
+          "INSERT INTO news (uuid, date, title, body) VALUES (?, ?, ?, ?)"
+        ).bind(newsUuid, date, title, body).run();
+
+        return json({ ok: true, uuid: newsUuid }, 201);
       }
 
       /* =====================

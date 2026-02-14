@@ -301,6 +301,20 @@ app.post("/admin/products", basicAuth, async (req, res) => {
   }
   res.redirect("/admin");
 });
+
+app.post("/admin/news", basicAuth, async (req, res) => {
+  const r = await fetch(API + "/news", {
+    method: "POST",
+    headers: authJsonHeaders(),
+    body: JSON.stringify(req.body)
+  });
+
+  if (!r.ok) {
+    return res.status(r.status).send(await r.text());
+  }
+
+  res.redirect("/admin");
+});
   
 app.put("/admin/products/:slug", basicAuth, async (req, res) => {
   const r = await fetch(API + "/products", {
