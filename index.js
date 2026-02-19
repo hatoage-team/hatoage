@@ -58,12 +58,18 @@ app.get("/manifest.json", (req, res) => {
 });
 const API = "https://hatoage.wata777.workers.dev";
 
+const normalizeNewsItem = (item) => ({
+  ...item,
+  body: item?.body || item?.content || item?.description || item?.text || ""
+});
+
 const fetchNewsList = async () => {
   const response = await fetch(`${API}/news`);
   if (!response.ok) {
     throw new Error(`Failed to fetch news: ${response.status}`);
   }
-  return response.json();
+  const news = await response.json();
+  return Array.isArray(news) ? news.map(normalizeNewsItem) : [];
 };
 
 const fetchNewsByUuid = async (uuid) => {
@@ -74,7 +80,8 @@ const fetchNewsByUuid = async (uuid) => {
   if (!response.ok) {
     throw new Error(`Failed to fetch news detail: ${response.status}`);
   }
-  return response.json();
+  const article = await response.json();
+  return article ? normalizeNewsItem(article) : null;
 };
 
 app.get("/products", async (_, res) => {

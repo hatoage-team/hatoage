@@ -200,6 +200,7 @@ footer {
   margin-top: 12px;
   line-height: 1.7;
   color: #333;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 600px) {
