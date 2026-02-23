@@ -9,147 +9,232 @@
 
 <url>
   <loc>https://hatoage.wata777.f5.si/</loc>
-  <lastmod>2025-12-23T09:44:18+00:00</lastmod>
+  <lastmod>2026-02-19T12:07:33+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/mail/</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/news/</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/products/</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/products/hatoage_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <loc>https://hatoage.wata777.f5.si/search/</loc>
+  <lastmod>2026-02-19T12:07:33+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/news/2</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/products/hatoage_large</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/products/hato</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/products/hato_head</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/products/hato_wings</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <loc>https://hatoage.wata777.f5.si/news/1</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/products/hato_legs</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/products/hato_nikuset</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <loc>https://hatoage.wata777.f5.si/products/hato_wings</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/hato_head</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/hatoage_small</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/products/hatoage_spices_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/products/hatoage_spices_big</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/products/hatoage_cheese_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/products/hatoage_cheese_big</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/products/hatoage_red_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/hatoage_chocolate_small</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/hatoage_large</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/hatoage_spices_big</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/hatoage_cheese_big</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/products/hatoage_red_big</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/order/hatoage_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.51</priority>
+  <loc>https://hatoage.wata777.f5.si/products/hatoage_chocolate_big</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/order/hatoage_large</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.51</priority>
+  <loc>https://hatoage.wata777.f5.si/products/hato_nikuset</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/order/hato</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.51</priority>
+  <loc>https://hatoage.wata777.f5.si/products/hatosyu</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/order/hato_head</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.51</priority>
+  <loc>https://hatoage.wata777.f5.si/products/hato</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/order/hato_wings</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <loc>https://hatoage.wata777.f5.si/products/aohato</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/kato</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/products/whitebear</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/news</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/order/hato_legs</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 <url>
-  <loc>https://hatoage.wata777.f5.si/order/hato_nikuset</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <loc>https://hatoage.wata777.f5.si/order/hato_wings</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hato_head</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatoage_small</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/order/hatoage_spices_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/order/hatoage_spices_big</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/order/hatoage_cheese_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
-  <priority>0.51</priority>
-</url>
-<url>
-  <loc>https://hatoage.wata777.f5.si/order/hatoage_cheese_big</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/order/hatoage_red_small</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatoage_chocolate_small</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatoage_large</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatoage_spices_big</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatoage_cheese_big</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 <url>
   <loc>https://hatoage.wata777.f5.si/order/hatoage_red_big</loc>
-  <lastmod>2025-12-25T08:48:02+00:00</lastmod>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatoage_chocolate_big</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hato_nikuset</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hatosyu</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/hato</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/aohato</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/kato</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://hatoage.wata777.f5.si/order/whitebear</loc>
+  <lastmod>2026-02-23T04:53:52+00:00</lastmod>
   <priority>0.51</priority>
 </url>
 
