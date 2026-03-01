@@ -1,3 +1,7 @@
+:root {
+  --header-height: 90px;
+}
+
 /* ===== リセット & 基本 ===== */
 * {
   box-sizing: border-box;
@@ -67,17 +71,22 @@ nav ul li a:hover {
 
 /* ===== メイン ===== */
 main {
-  padding-top: 90px; /* fixed header 分 */
+  padding-top: calc(var(--header-height) + 20px);
 }
 
 /* ===== アニメーション ===== */
 .fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js-enabled .fade-in {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
-.fade-in.visible {
+.js-enabled .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -132,6 +141,114 @@ footer {
   }
 
   main {
-    padding-top: 110px;
+    padding-top: calc(var(--header-height) + 20px);
   }
+}
+
+/* ===== ニュース（ブログ風） ===== */
+.news-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 8px 16px 0;
+  text-align: left;
+}
+
+.news-hero {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #eef7ff, #ffffff);
+  border: 1px solid #d9e8f7;
+  border-radius: 12px;
+}
+
+.news-hero h1 {
+  margin: 8px 0;
+}
+
+.news-tag {
+  margin: 0;
+  color: #007acc;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.news-subtitle {
+  margin: 0;
+  color: #4a4a4a;
+}
+
+.news-error {
+  color: #d32f2f;
+  margin: 16px 0;
+}
+
+.news-list {
+  display: grid;
+  gap: 16px;
+}
+
+.news-post {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.news-post-header h2 {
+  margin: 6px 0 0;
+}
+
+.news-date {
+  color: #666;
+  font-size: 13px;
+}
+
+.news-body {
+  margin-top: 12px;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 600px) {
+  .news-main {
+    padding: 8px 12px 0;
+  }
+
+  .news-post {
+    padding: 14px;
+  }
+}
+
+.news-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+.news-link:hover .news-post-header h2 {
+  text-decoration: underline;
+}
+
+.news-back {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #007acc;
+  text-decoration: none;
+}
+
+.news-back:hover {
+  text-decoration: underline;
+}
+
+.news-post-detail h1 {
+  margin: 8px 0 0;
+}
+
+.news-uuid {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #888;
 }

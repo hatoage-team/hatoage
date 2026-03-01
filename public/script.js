@@ -1,6 +1,15 @@
+document.documentElement.classList.add("js-enabled");
+
 document.addEventListener("DOMContentLoaded", () => {
   /* ===== フェードイン処理 ===== */
   const fadeElements = document.querySelectorAll(".fade-in");
+  const header = document.querySelector("header");
+
+  function syncHeaderHeight() {
+    if (!header) return;
+    const headerHeight = header.offsetHeight;
+    document.documentElement.style.setProperty("--header-height", `${headerHeight}px`);
+  }
 
   function checkVisibility() {
     fadeElements.forEach(el => {
@@ -14,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.addEventListener("scroll", checkVisibility, { passive: true });
+  window.addEventListener("resize", syncHeaderHeight, { passive: true });
+  syncHeaderHeight();
   checkVisibility();
 
   /* ===== 商品検索 ===== */
