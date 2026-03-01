@@ -19,16 +19,21 @@
     <p class="news-error fade-in"><%= error %></p>
   <% } %>
 
-  <% if (article) { %>
-    <article class="news-post news-post-detail fade-in">
+  <article class="news-post news-post-detail fade-in">
+    <% if (article) { %>
       <header class="news-post-header">
         <time datetime="<%= article.date %>" class="news-date"><%= article.date %></time>
         <h1><%= article.title %></h1>
         <p class="news-uuid">記事ID: <%= article.uuid || article.id %></p>
       </header>
       <p class="news-body"><%= article.body || "本文は準備中です。" %></p>
-    </article>
-  <% } %>
+    <% } else { %>
+      <header class="news-post-header">
+        <h1>記事を表示できませんでした</h1>
+      </header>
+      <p class="news-body">本文は準備中です。</p>
+    <% } %>
+  </article>
 </main>
 
 <%- include("partials/footer") %>
