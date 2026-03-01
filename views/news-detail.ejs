@@ -5,21 +5,21 @@
   <title><%= article?.title || 'ニュース詳細' %> - はとあげマート</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="はとあげマーケットのニュース詳細ページです。">
-  <link rel="stylesheet" href="/style.css">
-  <script defer src="/script.js"></script>
+  <link rel="stylesheet" href="/style.css?v=20260301">
+  <script defer src="/script.js?v=20260301"></script>
   <link rel="icon" href="/assets/favicon.ico">
 </head>
 <body>
 <%- include("partials/header") %>
 
 <main class="news-main">
-  <a href="/news" class="news-back fade-in">← ニュース一覧へ戻る</a>
+  <a href="/news" class="news-back">← ニュース一覧へ戻る</a>
 
   <% if (error) { %>
-    <p class="news-error fade-in"><%= error %></p>
+    <p class="news-error"><%= error %></p>
   <% } %>
 
-  <article class="news-post news-post-detail fade-in">
+  <article class="news-post news-post-detail">
     <% if (article) { %>
       <header class="news-post-header">
         <time datetime="<%= article.date %>" class="news-date"><%= article.date %></time>
