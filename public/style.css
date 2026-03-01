@@ -67,7 +67,7 @@ nav ul li a:hover {
 
 /* ===== メイン ===== */
 main {
-  padding-top: 90px; /* fixed header 分 */
+  padding-top: 120px; /* fixed header 分 */
 }
 
 /* ===== アニメーション ===== */
@@ -132,7 +132,7 @@ footer {
   }
 
   main {
-    padding-top: 110px;
+    padding-top: 140px;
   }
 }
 
@@ -140,7 +140,7 @@ footer {
 .news-main {
   max-width: 860px;
   margin: 0 auto;
-  padding: 110px 16px 0;
+  padding: 0 16px;
   text-align: left;
 }
 
@@ -205,7 +205,7 @@ footer {
 
 @media (max-width: 600px) {
   .news-main {
-    padding-top: 125px;
+    padding: 0 12px;
   }
 
   .news-post {

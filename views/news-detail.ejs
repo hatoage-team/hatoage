@@ -26,7 +26,7 @@
         <h1><%= article.title %></h1>
         <p class="news-uuid">記事ID: <%= article.uuid || article.id %></p>
       </header>
-      <p class="news-body"><%= article.body %></p>
+      <p class="news-body"><%= article.body || "本文は準備中です。" %></p>
     </article>
   <% } %>
 </main>

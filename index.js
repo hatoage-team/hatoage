@@ -60,7 +60,7 @@ const API = "https://hatoage.wata777.workers.dev";
 
 const normalizeNewsItem = (item) => ({
   ...item,
-  body: item?.body || item?.content || item?.description || item?.text || ""
+  body: item?.body || item?.content || item?.description || item?.text || "本文は準備中です。"
 });
 
 const fetchNewsList = async () => {

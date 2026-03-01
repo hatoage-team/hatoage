@@ -35,7 +35,7 @@
           <time datetime="<%= item.date %>" class="news-date"><%= item.date %></time>
           <h2><%= item.title %></h2>
         </header>
-        <p class="news-body"><%= item.body %></p>
+        <p class="news-body"><%= item.body || "本文は準備中です。" %></p>
         </a>
       </article>
     <% }) %>
