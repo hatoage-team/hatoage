@@ -1,6 +1,22 @@
- [![Node.js CI](https://github.com/hatoage-team/hatoage/actions/workflows/node.js.yml/badge.svg)](https://github.com/hatoage-team/hatoage/actions/workflows/node.js.yml)
+# hatoage-market (Next.js)
 
-## Cloudflare Workers API example
+このプロジェクトは **Next.js + TypeScript(TSX)** で構成された、はとあげマーケットのWebアプリです。
 
-- `workers/worker.js` に、このWebアプリが利用するAPI（`/products`, `/news`, `/mail/*`）の実装例を追加しています。
-- D1 バインディング名は `DB`、認証用シークレットは `RENDER_TOKEN`、メイン通知先は `MAIN_SERVER_URL`（任意）を利用します。
+## 開発
+
+```bash
+npm install
+npm run dev
+```
+
+## 本番ビルド
+
+```bash
+npm run build
+npm start
+```
+
+## 補足
+
+- 旧Express/EJS実装のファイルは互換のためリポジトリに残しています。
+- 商品・ニュースは `https://hatoage.wata777.workers.dev` から取得し、失敗時はローカルJSONへフォールバックします。
