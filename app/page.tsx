@@ -6,7 +6,7 @@ export default function HomePage() {
     <main>
       {/* 画像をフェードイン */}
       <FadeIn>
-        <div className="concept-image fade-in">
+        <div className="concept-image">
           <img src="/assets/concept.png" alt="コンセプト画像" />
         </div>
       </FadeIn>
@@ -15,7 +15,7 @@ export default function HomePage() {
 
       {/* セクション全体をまとめてフェードイン */}
       <FadeIn>
-        <section className="intro fade-in">
+        <section className="intro">
           <h1>ようこそ！はとあげマートへ</h1>
           <p>美味しい「はとあげ」を販売する架空のコンビニです。</p>
           <Link href="/products" className="btn">商品一覧を見る</Link>
