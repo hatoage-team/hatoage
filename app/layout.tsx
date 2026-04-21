@@ -15,7 +15,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Header />
         {children}
-        <Script src="/script.js" strategy="afterInteractive"/>
+        <Script id="register-sw" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                  .then(() => console.log('🐦 SW registered'))
+                  .catch(err => console.error('SW failed', err));
+              });
+            }
+          `}
+        </Script>
         <Footer />
       </body>
     </html>
