@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { fetchProducts } from '../../lib/api';
-import FadeIn from '../../components/FadeIn'; // 先ほど作成したコンポーネント
+import FadeIn from '../components/FadeIn'; // 先ほど作成したコンポーネント
 
 export const dynamic = 'force-dynamic';
 
