@@ -258,3 +258,80 @@ footer {
   color: #555;
   margin: 8px 0 18px;
 }
+
+/* --- ハンバーガーボタンの設定 --- */
+.menu-trigger {
+  display: none; /* デフォルト(PC)は隠す */
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 30px;
+  height: 24px;
+  position: relative;
+  z-index: 1100;
+}
+
+@media (max-width: 768px) {
+  .menu-trigger { display: block; }
+
+  .menu-trigger span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #007acc; /* ロゴやボタンに合わせる */
+    transition: all 0.3s;
+  }
+  .menu-trigger span:nth-child(1) { top: 0; }
+  .menu-trigger span:nth-child(2) { top: 11px; }
+  .menu-trigger span:nth-child(3) { bottom: 0; }
+
+  /* ✕印アニメーション */
+  .menu-trigger.active span:nth-child(1) { transform: translateY(11px) rotate(-45deg); }
+  .menu-trigger.active span:nth-child(2) { opacity: 0; }
+  .menu-trigger.active span:nth-child(3) { transform: translateY(-11px) rotate(45deg); }
+
+  /* スマホ時のナビゲーション（スライドメニュー） */
+  nav.nav {
+    position: fixed;
+    top: 0;
+    right: -100%; /* 隠す */
+    width: 250px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    transition: 0.3s ease-in-out;
+    z-index: 1050;
+    padding-top: 100px;
+  }
+
+  nav.nav.open {
+    right: 0;
+  }
+
+  nav ul {
+    flex-direction: column; /* 縦並び */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1040;
+  }
+}
+
+/* --- フェードインの調整 --- */
+/* Next.jsでは常にJSが有効なので .js-enabled を外してもOKです */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
