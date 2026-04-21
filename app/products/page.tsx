@@ -11,7 +11,7 @@ export default async function ProductsPage() {
     <main>
       {/* H1をフェードイン */}
       <FadeIn>
-        <h1 className="fade-in">商品一覧</h1>
+        <h1>商品一覧</h1>
       </FadeIn>
 
       <div className="product-list">
@@ -24,7 +24,7 @@ export default async function ProductsPage() {
         {products.map((p) => (
           /* 商品カードごとにフェードインを適用 */
           <FadeIn key={p.slug}>
-            <div className="product fade-in">
+            <div className="product">
               <img src={`/assets/${p.image}`} alt={p.name} />
               <h2>{p.name} ({p.amount})</h2>
               <p>希望小売価格: {p.price}円</p>
