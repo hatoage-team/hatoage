@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import FadeIn from '../components/FadeIn'; // パスは適宜調整してください
+import FadeIn from 'components/FadeIn'; // パスは適宜調整してください
 
 export default function HomePage() {
   return (
