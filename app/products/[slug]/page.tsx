@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchProductBySlug } from '../../../lib/api';
-
+import FadeIn from '../../components/Fadein';
 export const dynamic = 'force-dynamic';
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -12,13 +12,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   return (
     <main>
-      <h1 className="fade-in">{product.name} ({product.amount})</h1>
-      <p className="fade-in">希望小売価格 : {product.price}円</p>
-      <div className="product-images fade-in">
+      <FadeIn >
+      <h1>{product.name} ({product.amount})</h1>
+      <p>希望小売価格 : {product.price}円</p>
+      <div className="product-images">
         <img src={`/assets/${product.image}`} alt={product.name} />
       </div>
-      <Link href={`/order/${product.slug}`} className="btn fade-in">購入</Link>
-      <Link href="/products" className="btn fade-in">商品一覧に戻る</Link>
+      <Link href={`/order/${product.slug}`} className="btn">購入</Link>
+      <Link href="/products" className="btn">商品一覧に戻る</Link>
+      </FadeIn >
     </main>
   );
 }
