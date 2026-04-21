@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchProductBySlug } from '../../../lib/api';
-import FadeIn from '../../components/Fadein';
+import FadeIn from '../../components/FadeIn';
 export const dynamic = 'force-dynamic';
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
