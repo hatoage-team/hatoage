@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import MailRegistration from '../components/MailRegistration';
+import MailRegistration from '@/components/MailRegistration';
 
 export const metadata: Metadata = {
   title: 'メール登録',

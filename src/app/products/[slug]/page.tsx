@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import ProductImage from '../../components/ProductImage';
+import ProductImage from '@/components/ProductImage';
 import { notFound } from 'next/navigation';
-import { fetchProductBySlug, fetchProducts, getProductImageSrc } from '../../../lib/api';
-import FadeIn from '../../components/FadeIn';
+import { fetchProductBySlug, fetchProducts, getProductImageSrc } from '@/lib/api';
+import FadeIn from '@/components/FadeIn';
 
 export const revalidate = 60;
 

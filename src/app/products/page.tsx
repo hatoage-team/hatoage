@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import ProductImage from '../components/ProductImage';
-import { fetchProducts, getProductImageSrc } from '../../lib/api';
-import FadeIn from '../components/FadeIn';
+import ProductImage from '@/components/ProductImage';
+import { fetchProducts, getProductImageSrc } from '@/lib/api';
+import FadeIn from '@/components/FadeIn';
 
 export const revalidate = 60;
 

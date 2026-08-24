@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { fetchNewsList, fetchProducts } from '../lib/api';
+import { fetchNewsList, fetchProducts } from '@/lib/api';
 
 const baseUrl = 'https://hatoage.wata777.f5.si';
 

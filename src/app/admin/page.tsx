@@ -1,5 +1,5 @@
-import AdminProductList from '../components/AdminProductList';
-import { fetchProducts } from '../../lib/api';
+import AdminProductList from '@/components/AdminProductList';
+import { fetchProducts } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendHtmlMail } from '../../../lib/gmail';
+import { sendHtmlMail } from '@/lib/gmail';
 
 function authorized(req: NextRequest) {
   const token = process.env.RENDER_TOKEN;

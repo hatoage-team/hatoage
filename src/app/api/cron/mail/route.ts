@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendHtmlMail } from '../../../../lib/gmail';
+import { sendHtmlMail } from '@/lib/gmail';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'https://hatoage.wata777.workers.dev';
 

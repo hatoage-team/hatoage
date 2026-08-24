@@ -1,5 +1,5 @@
-import productsSeed from '../products.json';
-import newsSeed from '../news.json';
+import productsSeed from '../../products.json';
+import newsSeed from '../../news.json';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'https://hatoage.wata777.workers.dev';
 

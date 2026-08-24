@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import ProductImage from '../components/ProductImage';
-import { fetchProducts, getProductImageSrc } from '../../lib/api';
+import ProductImage from '@/components/ProductImage';
+import { fetchProducts, getProductImageSrc } from '@/lib/api';
 
 export const revalidate = 60;
 

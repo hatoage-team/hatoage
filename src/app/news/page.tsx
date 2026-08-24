@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { fetchNewsList } from '../../lib/api';
+import { fetchNewsList } from '@/lib/api';
 
 export const revalidate = 60;
 
