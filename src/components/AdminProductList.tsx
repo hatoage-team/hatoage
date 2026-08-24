@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Product } from '../../lib/api';
+import type { Product } from '@/lib/api';
 
 type Props = { products: Product[] };
 
