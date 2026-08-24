@@ -1,0 +1,20 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'はとあげマート',
+    short_name: 'はとあげ',
+    description: '美味しいはとあげを販売する架空のコンビニ',
+    start_url: '/',
+    display: 'minimal-ui',
+    background_color: '#fff8f0',
+    theme_color: '#007acc',
+    orientation: 'portrait',
+    icons: [
+      { src: '/assets/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/assets/icon-512.png', sizes: '512x512', type: 'image/png' }
+    ],
+    lang: 'ja',
+    id: 'hatoage'
+  };
+}

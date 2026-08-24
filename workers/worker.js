@@ -98,11 +98,14 @@ export default {
          2. MAIL / OTP (POST & GET)
       ===================== */
       if (method === "POST" && pathname === "/mail/otp") {
+        authRender(req, env);
         const body = await req.json();
         const email = body.email;
         if (!email) throw new HttpError("email required", 400);
 
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const random = new Uint32Array(1);
+        crypto.getRandomValues(random);
+        const otp = String(100000 + (random[0] % 900000));
 
         await env.DB.prepare(
           "INSERT OR REPLACE INTO otp_codes (email, otp, expires) VALUES (?, ?, datetime('now','+5 minutes'))"
@@ -112,6 +115,7 @@ export default {
       }
 
       if (method === "POST" && pathname === "/mail/verify") {
+        authRender(req, env);
         const { email, otp } = await req.json();
         if (!email || !otp) throw new HttpError("email and otp required", 400);
 
@@ -161,18 +165,25 @@ export default {
       if ((method === "PUT" || method === "PATCH") && pathname === "/products") {
         authRender(req, env);
         const body = await req.json();
-        const { slug, ...fields } = body;
+        const { slug, name, amount, price, image } = body;
         if (!slug) throw new HttpError("slug required", 400);
 
-        const keys = Object.keys(fields);
-        if (keys.length === 0) throw new HttpError("no fields to update", 400);
+        const fields = { name, amount, price, image };
+        const allowed = Object.entries(fields).filter(([, value]) => value !== undefined);
+        if (allowed.length === 0) throw new HttpError("no fields to update", 400);
 
-        const setClause = keys.map(k => `${k}=?`).join(",");
-        const values = keys.map(k => fields[k]);
+        if (price !== undefined && (!Number.isFinite(Number(price)) || Number(price) < 0)) {
+          throw new HttpError("invalid price", 400);
+        }
 
-        await env.DB.prepare(
+        const setClause = allowed.map(([key]) => `${key}=?`).join(",");
+        const values = allowed.map(([, value]) => value);
+
+        const result = await env.DB.prepare(
           `UPDATE products SET ${setClause} WHERE slug=?`
         ).bind(...values, slug).run();
+
+        if (!result.meta?.changes) throw new HttpError("product not found", 404);
         return json({ ok: true });
       }
 
